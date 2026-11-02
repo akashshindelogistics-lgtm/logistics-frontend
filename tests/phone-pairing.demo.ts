@@ -12,7 +12,9 @@ import { loginOrg, registerOrg, uid, type TestOrg } from './helpers';
  * Normally run by `android/scripts/demo-phone-pairing.sh`, which hands the
  * decoded link to the app on the emulator. They take turns through files in
  * PAIRING_DEMO_HANDOFF: this writes `link.txt`, waits for the phone's
- * `phone-paired`, shows "last reported", unpairs, and writes `unpaired`.
+ * `phone-paired`, shows "last reported", unpairs, writes `unpaired`, and waits
+ * for the phone's `phone-refused` before finishing: the phone reaches the
+ * server through this run's Vite dev server, which stops when the test ends.
  * Also takes PAIRING_DEMO_ORG_NAME, PAIRING_DEMO_ORG_PASSWORD and
  * PAIRING_DEMO_DRIVER_ID.
  *
@@ -103,7 +105,12 @@ test('pairing a driver phone from the dashboard', async ({ page }) => {
     await page.waitForTimeout(1000);
     await card.getByTestId('pairing-confirm').getByRole('button', { name: 'Unpair' }).click();
     await expect(card.getByTestId('pairing-status')).toHaveText('Not paired');
-    if (handoff) writeFileSync(join(handoff, 'unpaired'), '');
+    if (handoff) {
+      writeFileSync(join(handoff, 'unpaired'), '');
+      // Keep Vite (and so the phone's server address) up until the phone has
+      // made its last request.
+      await waitForFile(join(handoff, 'phone-refused'), 120_000);
+    }
     await page.waitForTimeout(2500);
   });
 });
