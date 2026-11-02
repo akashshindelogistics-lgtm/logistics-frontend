@@ -65,8 +65,9 @@ export default defineConfig({
       timeout: 60_000,
     },
     {
+      // The API lives in its own repo; by default a sibling checkout.
       command: 'cargo run --bin logistics-system',
-      cwd: '..',
+      cwd: process.env.BACKEND_DIR || '../logistics-backend',
       url: `http://127.0.0.1:${apiPort}/api/orgs`,
       env: { PORT: apiPort },
       reuseExistingServer: true,

@@ -34,5 +34,5 @@ export default defineConfig({
     },
   ],
   // Assumes `vite dev` and the Rust backend are already running.
-  // Start them manually: cargo run  &&  vite dev
+  // Start them manually: cargo run (in logistics-backend)  &&  vite dev
 });

@@ -61,7 +61,7 @@ export default function DriverAppCard() {
         {release === null && (
           <p className="muted" data-testid="driver-app-none">
             No driver app has been published on this server yet. Build and publish one with
-            <code> android/scripts/build-release.sh</code> (see the driver install guide).
+            <code> scripts/build-release.sh</code> in the logistics-android repo (see its driver install guide).
           </p>
         )}
         {release && url && (
