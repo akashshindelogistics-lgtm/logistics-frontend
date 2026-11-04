@@ -20,6 +20,9 @@ import { defineConfig, devices } from '@playwright/test';
 const webPort = process.env.E2E_WEB_PORT || '5173';
 const apiPort = process.env.E2E_API_PORT || '8080';
 const webURL = process.env.E2E_BASE_URL || `http://localhost:${webPort}`;
+// E2E_FAKE_MODEL=1 runs agents against tests/fake-model.mjs instead of Claude.
+const fakeModel = !!process.env.E2E_FAKE_MODEL;
+const fakeModelPort = process.env.FAKE_MODEL_PORT || '8799';
 
 export default defineConfig({
   testDir: './tests',
@@ -57,6 +60,14 @@ export default defineConfig({
     },
   ],
   webServer: [
+    ...(fakeModel
+      ? [{
+          command: 'node tests/fake-model.mjs',
+          url: `http://127.0.0.1:${fakeModelPort}/`,
+          env: { FAKE_MODEL_PORT: fakeModelPort },
+          reuseExistingServer: true,
+        }]
+      : []),
     {
       command: `npm run dev -- --port ${webPort} --strictPort`,
       url: webURL,
@@ -69,7 +80,10 @@ export default defineConfig({
       command: 'cargo run --bin logistics-system',
       cwd: process.env.BACKEND_DIR || '../logistics-backend',
       url: `http://127.0.0.1:${apiPort}/api/orgs`,
-      env: { PORT: apiPort },
+      env: {
+        PORT: apiPort,
+        ...(fakeModel ? { AGENT_MODEL_URL: `http://127.0.0.1:${fakeModelPort}/v1/messages` } : {}),
+      },
       reuseExistingServer: true,
       timeout: 300_000,
     },

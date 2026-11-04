@@ -62,6 +62,7 @@ running.
 
 ```bash
 npm run test:e2e:demo                     # the whole product, end to end
+npm run test:e2e:demo:agent-inbox         # agents asking for decisions (scripted model, no credits needed)
 npm run test:e2e:demo:reports             # operations reporting
 npm run test:e2e:demo:roles               # role-scoped team members
 npm run test:e2e:demo:notifications       # dispatch notifications
