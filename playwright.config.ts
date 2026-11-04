@@ -34,5 +34,8 @@ export default defineConfig({
     },
   ],
   // Assumes `vite dev` and the Rust backend are already running.
-  // Start them manually: cargo run (in logistics-backend)  &&  vite dev
+  // Start them manually, giving the API its own database, as the default one is
+  // shared with the local deployment:
+  //   DATABASE_URL=mysql://root:password@localhost:3306/logistics_e2e cargo run  (in logistics-backend)
+  //   vite dev
 });
