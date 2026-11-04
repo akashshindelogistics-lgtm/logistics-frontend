@@ -96,6 +96,8 @@ jobs:
           # this ephemeral CI backend, not a real secret.
           JWT_SECRET: ci-e2e-jwt-secret-not-a-real-secret-0123456789
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Agents run against tests/fake-model.mjs, not Claude.
+          AGENT_MODEL_URL: http://127.0.0.1:8799/v1/messages
 
       - name: Wait for the API
         run: |
@@ -116,7 +118,9 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Start Vite dev server
-        run: npm run dev &
+        run: |
+          node tests/fake-model.mjs &
+          npm run dev &
 
       - name: Wait for Vite
         run: |
