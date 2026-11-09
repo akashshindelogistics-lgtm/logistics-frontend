@@ -45,7 +45,7 @@ test('multi-stop trips', async ({ page }) => {
   await test.step('Open the Trips page', async () => {
     await page.getByRole('link', { name: /trips/i }).click();
     await expect(page).toHaveURL(/\/trips$/);
-    await expect(page.getByRole('heading', { level: 1, name: 'Multi-stop Trips' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Trips', exact: true })).toBeVisible();
     await page.waitForTimeout(700);
   });
 

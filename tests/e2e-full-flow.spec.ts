@@ -453,10 +453,14 @@ test('full logistics workflow: register, login, warehouse, fleet, delivery, bill
     await page.getByLabel(/quantity/i).nth(1).fill('8');
     await page.getByRole('button', { name: /^plan trip$/i }).click();
 
-    const card = page.locator('.section-card', { hasText: vehicleReg });
+    // Found by the new customer: this truck's earlier dispatches have cards here too.
+    const card = page.locator('.section-card', { hasText: second });
     await expect(card).toBeVisible({ timeout: 8000 });
+    await expect(card.getByText(vehicleReg)).toBeVisible();
     await expect(card.getByText(custName)).toBeVisible();
-    await expect(card.getByText(second)).toBeVisible();
+
+    // The earlier standalone dispatches are listed as one-stop trips.
+    await expect(page.getByText('One stop').first()).toBeVisible();
   });
 
   await test.step('Confirm everything shows up on the fleet, customer and dashboard views', async () => {
@@ -470,6 +474,8 @@ test('full logistics workflow: register, login, warehouse, fleet, delivery, bill
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 8000 });
     await expect(page.locator('.stat-card').filter({ hasText: 'Fleet Vehicles' })).toBeVisible();
     await expect(page.locator('.stat-card').filter({ hasText: 'Dispatches' })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Order pipeline' })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Order volume' })).toBeVisible();
   });
 
   await test.step('See the Agent Inbox, with agents off until an admin turns them on', async () => {

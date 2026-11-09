@@ -288,6 +288,8 @@ export interface Trip {
   created_at: number;
   status: TripStatus;
   stops: DispatchOrder[];
+  /** A dispatch made on its own, listed as a one-stop trip. `id` is the dispatch's id. */
+  is_single_dispatch?: boolean;
 }
 
 // Mirrors PaymentStatus / Invoice / CustomerBillingSummary in
