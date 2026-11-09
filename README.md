@@ -75,6 +75,7 @@ npm run test:e2e:demo:motion              # transitions, lifecycle track, glidin
 npm run test:e2e:demo:vendors             # vehicle vendors
 npm run test:e2e:demo:hired-vehicles      # dispatching on a hired truck
 npm run test:e2e:demo:vendor-payments     # paying vendors, hired-transport report
+npm run test:e2e:demo:dashboard          # the dashboard overview, dark mode and phone drawer
 npm run test:e2e:demo:driver-tracking     # a phone's positions on the dashboard
 npm run test:e2e:demo:driver-app          # the driver app download card
 npm run test:e2e:demo:phone-pairing       # pairing a driver's phone by QR code

@@ -26,3 +26,7 @@ export const IconClock    = i('M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 5v5l4 
 export const IconChart    = i('M3 3v18h18M7 15l3-4 3 3 4-6');
 export const IconSun      = i('M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42');
 export const IconMoon     = i('M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+export const IconRoute    = i('M6 16a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM18 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15');
+export const IconStore    = i('M3 9l1.5-6h15L21 9M4 12v9h16v-9M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M9 21v-6h6v6');
+export const IconBriefcase = i('M3 7h18v13H3zM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18');
+export const IconMenu     = i('M3 6h18M3 12h18M3 18h18');
