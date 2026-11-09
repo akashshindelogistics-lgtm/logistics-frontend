@@ -141,8 +141,8 @@ export default function Trips() {
     <div className="page">
       <div className="page-header">
         <div className="page-title-group">
-          <h1>Multi-stop Trips</h1>
-          <p>One vehicle serving several customer orders in a sequence</p>
+          <h1>Trips</h1>
+          <p>Multi-stop routes and single dispatches, newest first</p>
         </div>
         <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setError(''); }}>
           {showForm ? <><IconX size={14} />Cancel</> : <><IconPlus size={14} />Plan a Trip</>}
@@ -218,7 +218,7 @@ export default function Trips() {
           <div className="empty-state">
             <div className="empty-state-icon empty-state-icon-3d"><Icon3D name="road" size={48} /></div>
             <h3>No trips yet</h3>
-            <p>Plan a multi-stop trip to send one vehicle to several customers in a row.</p>
+            <p>Plan a multi-stop trip to send one vehicle to several customers in a row. Single dispatches appear here too.</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: 16 }}>
@@ -228,10 +228,16 @@ export default function Trips() {
                   <span className="section-card-title">
                     <IconTruck size={15} />{t.vehicle_registration_number ?? 'Awaiting hired vehicle'}
                     {t.vehicle_source === 'HIRED' && <span className="badge tag-amber" style={{ marginLeft: 8 }}>Hired</span>}
+                    {t.is_single_dispatch && <span className="badge" style={{ marginLeft: 8 }}>One stop</span>}
                     <span className="mono muted" style={{ marginLeft: 8 }}>{t.id.slice(0, 8)}…</span>
                   </span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span className={`status-tag ${TRIP_TAG[t.status]}`}>{t.status.replaceAll('_', ' ')}</span>
+                    {/* A one-stop trip's derived status reads COMPLETED even when cancelled, so show the dispatch's own. */}
+                    {t.is_single_dispatch && t.stops[0] ? (
+                      <span className={`status-tag ${STATUS_TAG_CLASS[t.stops[0].status]}`}>{formatStatus(t.stops[0].status)}</span>
+                    ) : (
+                      <span className={`status-tag ${TRIP_TAG[t.status]}`}>{t.status.replaceAll('_', ' ')}</span>
+                    )}
                     <button
                       className="btn btn-ghost btn-sm"
                       onClick={() => setMapOpenId(mapOpenId === t.id ? null : t.id)}
