@@ -219,6 +219,20 @@
   background: rgba(255,255,255,.08);
 }
 
+.sidebar-link-count {
+  position: relative;
+  margin-left: auto;
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--red-bg);
+  color: var(--red-text);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
 /* Grouped navigation */
 .sidebar-group + .sidebar-group { margin-top: 16px; }
 

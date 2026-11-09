@@ -182,6 +182,47 @@ export interface Notification {
   created_at: number;
 }
 
+// Mirrors src/logistics/agent/store.rs in logistics-backend.
+export type AutonomyMode = 'OFF' | 'SHADOW' | 'SUPERVISED' | 'AUTONOMOUS';
+export type AgentRisk = 'READ' | 'INTERNAL' | 'OPERATIONAL' | 'SENSITIVE';
+export type AgentActionStatus = 'SHADOWED' | 'PENDING_APPROVAL' | 'EXECUTING' | 'EXECUTED' | 'REJECTED' | 'FAILED';
+
+export interface AgentSettings {
+  mode: AutonomyMode;
+}
+
+export interface AgentAction {
+  id: string;
+  run_id: string;
+  org_id: string;
+  agent: string;
+  tool: string;
+  /** The tool's arguments, as JSON text. */
+  input: string;
+  reason: string;
+  risk: AgentRisk;
+  status: AgentActionStatus;
+  result: string | null;
+  created_at: number;
+  decided_at: number | null;
+  decided_by: string | null;
+}
+
+export interface AgentRun {
+  id: string;
+  org_id: string;
+  agent: string;
+  /** `schedule` or `manual`. */
+  trigger_source: string;
+  /** `RUNNING`, `COMPLETED`, `FAILED`, `REFUSED` or `HALTED`. */
+  status: string;
+  summary: string | null;
+  input_tokens: number;
+  output_tokens: number;
+  started_at: number;
+  finished_at: number | null;
+}
+
 // Mirrors DispatchStatus in src/logistics/dispatch/dispatch.rs. Keep in sync
 // if the backend state machine changes.
 export type DispatchStatus =

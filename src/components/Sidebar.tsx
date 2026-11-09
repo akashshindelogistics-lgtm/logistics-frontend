@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { IconGrid, IconBuilding, IconTruck, IconUsers, IconPackage, IconDispatch, IconChart, IconX, IconSun, IconMoon, IconRoute, IconStore, IconBriefcase, IconMenu } from './Icons';
+import { useEffect, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { IconGrid, IconInbox, IconBuilding, IconTruck, IconUsers, IconPackage, IconDispatch, IconChart, IconX, IconSun, IconMoon, IconRoute, IconStore, IconBriefcase, IconMenu } from './Icons';
 import { getOrgName, getOrgId, clearAuth, isLoggedIn, isAdmin } from '../api/auth';
+import { listAgentActions } from '../api/agents';
+import { onAgentInboxChanged } from '../lib/agentInbox';
 import { useTheme } from '../lib/theme';
 import { m } from 'motion/react';
 import { useTransitionClick } from '../lib/viewTransition';
@@ -17,6 +19,7 @@ const baseGroups: { title: string; links: NavItem[] }[] = [
   { title: 'Operations', links: [
     { to: '/dispatches', label: 'Dispatches',      Icon: IconDispatch },
     { to: '/trips',      label: 'Trips',           Icon: IconRoute },
+    { to: '/agents',     label: 'Agent Inbox',     Icon: IconInbox },
   ] },
   { title: 'Network', links: [
     { to: '/vehicles',   label: 'Vehicles',        Icon: IconTruck },
@@ -27,12 +30,40 @@ const baseGroups: { title: string; links: NavItem[] }[] = [
 ];
 const adminGroup = { title: 'Admin', links: [{ to: '/team', label: 'Team', Icon: IconUsers }] };
 
-function SidebarLink({ href, end, label, Icon, onNavigate }: {
+/** How often the waiting count refreshes while the dashboard is open. */
+const AGENT_COUNT_REFRESH_MS = 60_000;
+
+/** How many agent actions are waiting for a person. 0 if that can't be fetched. */
+function useAgentWaitingCount(orgId: string | null): number {
+  const { pathname } = useLocation();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!orgId) return;
+    const refresh = () => {
+      listAgentActions(orgId, 'PENDING_APPROVAL')
+        .then(r => setCount(r.data?.length ?? 0))
+        .catch(() => setCount(0));
+    };
+    refresh();
+    const timer = window.setInterval(refresh, AGENT_COUNT_REFRESH_MS);
+    const stopListening = onAgentInboxChanged(refresh);
+    return () => {
+      window.clearInterval(timer);
+      stopListening();
+    };
+  }, [orgId, pathname]);
+
+  return orgId ? count : 0;
+}
+
+function SidebarLink({ href, end, label, Icon, onNavigate, count = 0 }: {
   href: string;
   end: boolean;
   label: string;
   Icon: NavItem['Icon'];
   onNavigate: () => void;
+  count?: number;
 }) {
   const transitionClick = useTransitionClick(href);
   return (
@@ -54,6 +85,7 @@ function SidebarLink({ href, end, label, Icon, onNavigate }: {
           )}
           <Icon size={16} />
           <span>{label}</span>
+          {count > 0 && <span className="sidebar-link-count" aria-label={`${count} waiting`}>{count}</span>}
         </>
       )}
     </NavLink>
@@ -67,6 +99,7 @@ export default function Sidebar() {
   const loggedIn = isLoggedIn();
   const orgName = getOrgName();
   const orgId = getOrgId();
+  const agentCount = useAgentWaitingCount(loggedIn ? orgId : null);
   const groups = [...baseGroups, ...(loggedIn && isAdmin() ? [adminGroup] : [])];
   const closeMobile = () => setMobileOpen(false);
 
@@ -117,7 +150,7 @@ export default function Sidebar() {
               {group.links.map(({ to, label, Icon }) => {
                 // Redirect /orgs to the specific org detail page if we know the org ID
                 const href = (to === '/orgs' && orgId) ? `/orgs/${orgId}` : to;
-                return <SidebarLink key={to} href={href} end={to === '/'} label={label} Icon={Icon} onNavigate={closeMobile} />;
+                return <SidebarLink key={to} href={href} end={to === '/'} label={label} Icon={Icon} onNavigate={closeMobile} count={to === '/agents' ? agentCount : 0} />;
               })}
             </div>
           ))}

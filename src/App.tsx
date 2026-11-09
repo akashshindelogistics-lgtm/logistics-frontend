@@ -14,6 +14,7 @@ import Dispatches from './pages/Dispatches';
 import Reports from './pages/Reports';
 import Trips from './pages/Trips';
 import Team from './pages/Team';
+import AgentInbox from './pages/AgentInbox';
 import Vendors from './pages/Vendors';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -43,6 +44,7 @@ function AppShell() {
           <Route path="/dispatches" element={<ProtectedRoute><Dispatches /></ProtectedRoute>} />
           <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
           <Route path="/trips" element={<ProtectedRoute><Trips /></ProtectedRoute>} />
+          <Route path="/agents" element={<ProtectedRoute><AgentInbox /></ProtectedRoute>} />
           <Route path="/team" element={<ProtectedRoute><Team /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

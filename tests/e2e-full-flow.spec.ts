@@ -478,6 +478,12 @@ test('full logistics workflow: register, login, warehouse, fleet, delivery, bill
     await expect(page.getByRole('region', { name: 'Order volume' })).toBeVisible();
   });
 
+  await test.step('See the Agent Inbox, with agents off until an admin turns them on', async () => {
+    await page.goto('/agents');
+    await expect(page.getByRole('heading', { name: 'Agent Inbox' })).toBeVisible({ timeout: 8000 });
+    await expect(page.getByText(/agents are off/i)).toBeVisible();
+  });
+
   await test.step('Sign out', async () => {
     await page.getByRole('button', { name: /sign out/i }).click();
     await expect(page).toHaveURL(/\/login/, { timeout: 5000 });
