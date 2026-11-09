@@ -66,6 +66,7 @@ npm run test:e2e:demo:reports             # operations reporting
 npm run test:e2e:demo:roles               # role-scoped team members
 npm run test:e2e:demo:notifications       # dispatch notifications
 npm run test:e2e:demo:trips               # multi-stop trips
+npm run test:e2e:demo:one-stop-trips      # standalone dispatches on the Trips page
 npm run test:e2e:demo:assistant           # "ask your data" assistant
 npm run test:e2e:demo:uploads             # proof-of-delivery file uploads
 npm run test:e2e:demo:stock-categories    # stock categories
