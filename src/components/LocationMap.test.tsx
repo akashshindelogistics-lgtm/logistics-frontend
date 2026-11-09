@@ -61,7 +61,8 @@ describe('LocationMap', () => {
 
   it('imagePinIcon wraps the image and reuses one icon per URL', () => {
     const icon = imagePinIcon('/tanker.png');
-    expect((icon.options.html as HTMLImageElement).getAttribute('src')).toBe('/tanker.png');
+    // A string, so several markers can each get their own image element.
+    expect(icon.options.html).toContain('src="/tanker.png"');
     expect(icon.options.iconAnchor).toEqual([23, 40]);
     expect(imagePinIcon('/tanker.png')).toBe(icon);
   });

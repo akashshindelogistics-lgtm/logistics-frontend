@@ -11,7 +11,7 @@ test('Choosing a colour palette', async ({ page }) => {
   test.slow();
   await registerOrg(page, `Palettes Demo ${uid()}`);
   await page.goto('/');
-  await expect(page.locator('.dash-hero')).toBeVisible();
+  await expect(page.locator('.dash-head')).toBeVisible();
 
   for (const [mode, toggle] of [['light', /switch to dark theme/i], ['dark', /switch to light theme/i]] as const) {
     for (const name of PALETTES) {

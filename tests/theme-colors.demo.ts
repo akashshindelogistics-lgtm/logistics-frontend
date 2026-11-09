@@ -71,11 +71,11 @@ test('Oxford & Claret colour theme', async ({ page }) => {
 
   await test.step('Dashboard in light mode: ivory banner, evenly tinted stat cards, coloured statuses', async () => {
     await page.goto('/');
-    await expect(page.locator('.dash-hero')).toBeVisible();
+    await expect(page.locator('.dash-head')).toBeVisible();
     await expect(page.getByText('DELIVERED').first()).toHaveClass(/tag-green/);
     await expect(page.getByText('IN TRANSIT').first()).toHaveClass(/tag-purple/);
     await page.waitForTimeout(3500);
-    await page.locator('.stat-card').nth(1).hover();
+    await page.locator('.kpi').nth(1).hover();
     await page.waitForTimeout(1200);
   });
 
@@ -90,7 +90,7 @@ test('Oxford & Claret colour theme', async ({ page }) => {
     await setTheme(page, 'dark');
     await page.waitForTimeout(2000);
     await page.goto('/');
-    await expect(page.locator('.dash-hero')).toBeVisible();
+    await expect(page.locator('.dash-head')).toBeVisible();
     await page.waitForTimeout(3500);
     await page.goto('/dispatches');
     await page.waitForTimeout(2500);

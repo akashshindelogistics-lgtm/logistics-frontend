@@ -40,7 +40,7 @@ test.describe('Theme toggle', () => {
 
   test('applies the Oxford & Claret palette in both themes', async ({ page }) => {
     await registerOrg(page, `Theme Palette ${uid()}`);
-    await page.goto('/');
+    await page.goto('/reports');
     await page.getByRole('radio', { name: 'Heritage' }).check();
 
     // Claret brand, a warm charcoal sidebar and a gold "Customers" stat card in light mode…

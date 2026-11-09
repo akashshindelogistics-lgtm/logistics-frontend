@@ -1,76 +1,164 @@
-/* Greeting banner: a quiet ivory panel with an antique-gold glow in the corner,
-   so it frames the greeting without pulling focus from the figures below */
-.dash-hero {
-  margin-bottom: 24px;
+/* Control-tower layout: what needs action and where the fleet is come first.
+   Surfaces stay neutral; colour marks only data and status. */
+.page.dash { max-width: 1440px; }
+
+.dash-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.dash-date { font-size: 12.5px; color: var(--text-3); font-weight: 500; }
+.dash-title { font-size: 28px; font-weight: 700; letter-spacing: -.6px; color: var(--text-1); line-height: 1.25; }
+.dash-sub { font-size: 14px; color: var(--text-2); margin-top: 2px; }
+.dash-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+.dash-error {
+  margin-bottom: 14px;
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  background: var(--red-bg);
+  color: var(--red-text);
+  font-size: 13px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.kpi {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "label viz" "value viz" "sub sub";
+  align-items: end;
+  column-gap: 12px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color .15s, box-shadow .15s;
+}
+.kpi:hover { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-glow); }
+.kpi-label { grid-area: label; font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+.kpi-value {
+  grid-area: value;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.25;
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
+}
+.kpi-sub { grid-area: sub; font-size: 12px; color: var(--text-3); white-space: nowrap; }
+.kpi-viz { grid-area: viz; align-self: end; }
+
+.kpi-bars { display: flex; align-items: flex-end; gap: 2px; height: 42px; }
+.kpi-bar-hit { display: flex; align-items: flex-end; height: 100%; width: 5px; }
+.kpi-bar { display: block; width: 100%; border-radius: 2px 2px 0 0; background: var(--brand); opacity: .75; }
+.kpi-bar-hit:hover .kpi-bar { opacity: 1; }
+
+.kpi-meter { width: 72px; height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; margin-bottom: 4px; }
+.kpi-meter span { display: block; height: 100%; background: var(--brand); border-radius: 3px; }
+
+.dash-main {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.dash-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.dash-panel-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 22px 26px;
-  border-radius: var(--radius-lg);
-  background:
-    radial-gradient(90% 140% at 100% 0%, var(--accent-glow), transparent 55%),
-    linear-gradient(120deg, var(--hero-a), var(--hero-b));
-  border: 1px solid var(--hero-line);
-  box-shadow: var(--shadow-sm);
-  position: relative;
-  overflow: hidden;
+  gap: 10px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border2);
+}
+.dash-panel-head h2 { font-size: 14px; font-weight: 650; color: var(--text-1); }
+.dash-skeleton { flex: 1; margin: 14px 18px; border-radius: var(--radius); }
+.dash-panel-note { font-size: 12px; color: var(--text-3); }
+.dash-count {
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: 11px;
+  background: var(--red-bg);
+  color: var(--red-text);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
 }
 
-/* Overlapping 3D icon cluster on the right of the greeting */
-.dash-hero-art {
-  position: relative;
-  width: 170px;
-  height: 96px;
-  flex-shrink: 0;
+.dash-map, .dash-attention { height: 400px; }
+.dash-map .leaflet-container { flex: 1; min-height: 0; border-radius: 0 !important; }
+:root[data-theme="dark"] .dash-map .leaflet-tile-pane { filter: grayscale(1) invert(1) brightness(.85) contrast(.9); }
+
+.attn-list { list-style: none; overflow-y: auto; flex: 1; }
+.attn-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border2);
 }
-.dash-hero-art .icon-3d { position: absolute; }
-.dash-hero-art-back  { left: 0;    top: 4px;  opacity: .9; transform: rotate(-8deg); }
-.dash-hero-art-main  { left: 44px; top: 4px; }
-.dash-hero-art-front { right: 0;   bottom: 0; transform: rotate(6deg); }
+.attn-item:hover { background: var(--row-hover); }
+.attn-text { display: flex; flex-direction: column; min-width: 0; font-size: 12px; color: var(--text-3); }
+.attn-text strong { font-size: 13px; font-weight: 600; color: var(--text-1); }
+.dash-clear {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-3);
+  font-size: 13.5px;
+}
+
+.dash-pipeline { margin-bottom: 14px; }
+.pipe { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.pipe-stage { display: flex; flex-direction: column; gap: 2px; padding: 14px 18px 16px; border-right: 1px solid var(--border2); }
+.pipe-stage:last-child { border-right: 0; }
+.pipe-stage:hover { background: var(--row-hover); }
+.pipe-count { font-size: 22px; font-weight: 700; letter-spacing: -.5px; color: var(--text-1); font-variant-numeric: tabular-nums; }
+.pipe-label { font-size: 12.5px; color: var(--text-2); }
+.pipe-track { height: 4px; margin-top: 8px; border-radius: 2px; background: var(--border2); overflow: hidden; }
+.pipe-track span { display: block; height: 100%; border-radius: 2px; background: var(--brand); transition: width .3s; }
+
+@media (max-width: 1080px) {
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dash-main { grid-template-columns: minmax(0, 1fr); }
+  .dash-attention { height: auto; max-height: 340px; min-height: 120px; }
+}
 
 @media (max-width: 640px) {
-  .dash-hero-art { display: none; }
+  .dash-head { flex-direction: column; align-items: flex-start; }
+  .kpi-grid { grid-template-columns: minmax(0, 1fr); }
+  .pipe { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* 3D icons carry their own color; drop the tinted tile behind them */
-.stat-icon.stat-icon-3d {
-  width: 44px;
-  height: 44px;
-  background: none !important;
-}
-
-.dash-hero-title {
-  font-size: 26px;
-  font-weight: 800;
-  color: var(--hero-fg);
-  letter-spacing: -.5px;
-}
-
-.dash-hero-sub {
-  font-size: 14px;
-  color: var(--hero-sub);
-  margin-top: 4px;
-}
-
-/* Colored stat cards: each card is washed in its own --stat-* hue. The
-   class names are shared with Reports, so they map to the stat hues rather
-   than the status colors they're named after. */
-.card-blue   { --card: var(--stat-1); --card-bg: var(--stat-1-bg); --card-line: var(--stat-1-line); }
-.card-amber  { --card: var(--stat-2); --card-bg: var(--stat-2-bg); --card-line: var(--stat-2-line); }
-.card-purple { --card: var(--stat-3); --card-bg: var(--stat-3-bg); --card-line: var(--stat-3-line); }
-.card-green  { --card: var(--stat-4); --card-bg: var(--stat-4-bg); --card-line: var(--stat-4-line); }
-
-.card-blue, .card-amber, .card-purple, .card-green {
-  background: linear-gradient(160deg, var(--card-bg) 0%, var(--surface) 78%);
-  border-color: var(--card-line);
-}
+/* Stat cards on Reports. The class names map to the stat hues; the hue is
+   kept to the figure so sibling cards stay equal in weight. */
+.card-blue   { --card: var(--stat-1); }
+.card-amber  { --card: var(--stat-2); }
+.card-purple { --card: var(--stat-3); }
+.card-green  { --card: var(--stat-4); }
 
 .card-blue .stat-icon, .card-amber .stat-icon,
 .card-purple .stat-icon, .card-green .stat-icon {
   background: var(--card);
   color: var(--surface);
-  box-shadow: 0 4px 12px -2px var(--card-line);
 }
 
 .card-blue .stat-value, .card-amber .stat-value,

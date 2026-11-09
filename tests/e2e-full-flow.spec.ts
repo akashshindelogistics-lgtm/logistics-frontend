@@ -472,8 +472,8 @@ test('full logistics workflow: register, login, warehouse, fleet, delivery, bill
 
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 8000 });
-    await expect(page.locator('.stat-card').filter({ hasText: 'Fleet Vehicles' })).toBeVisible();
-    await expect(page.locator('.stat-card').filter({ hasText: 'Dispatches' })).toBeVisible();
+    await expect(page.locator('.kpi').filter({ hasText: 'Fleet in use' })).toBeVisible();
+    await expect(page.locator('.kpi').filter({ hasText: 'Dispatches' })).toBeVisible();
   });
 
   await test.step('Sign out', async () => {
