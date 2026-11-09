@@ -57,8 +57,9 @@ E2E_BASE_URL=http://localhost:5174 npm run test:e2e   # against a dev server on 
 
 Each opens a real browser window, slowed down, and records a video under
 `test-results/`. They start the Vite dev server, and the API with `cargo run`
-in `BACKEND_DIR` (default `../logistics-backend`), unless they're already
-running.
+in `BACKEND_DIR` (default `../logistics-backend`) on its own `logistics_e2e`
+database, unless they're already running. A running API keeps whatever database
+it was started with.
 
 ```bash
 npm run test:e2e:demo                     # the whole product, end to end
