@@ -67,6 +67,7 @@ npm run test:e2e:demo:reports             # operations reporting
 npm run test:e2e:demo:roles               # role-scoped team members
 npm run test:e2e:demo:notifications       # dispatch notifications
 npm run test:e2e:demo:trips               # multi-stop trips
+npm run test:e2e:demo:one-stop-trips      # standalone dispatches on the Trips page
 npm run test:e2e:demo:assistant           # "ask your data" assistant
 npm run test:e2e:demo:uploads             # proof-of-delivery file uploads
 npm run test:e2e:demo:stock-categories    # stock categories
@@ -75,6 +76,7 @@ npm run test:e2e:demo:motion              # transitions, lifecycle track, glidin
 npm run test:e2e:demo:vendors             # vehicle vendors
 npm run test:e2e:demo:hired-vehicles      # dispatching on a hired truck
 npm run test:e2e:demo:vendor-payments     # paying vendors, hired-transport report
+npm run test:e2e:demo:dashboard          # the dashboard overview, dark mode and phone drawer
 npm run test:e2e:demo:driver-tracking     # a phone's positions on the dashboard
 npm run test:e2e:demo:driver-app          # the driver app download card
 npm run test:e2e:demo:phone-pairing       # pairing a driver's phone by QR code

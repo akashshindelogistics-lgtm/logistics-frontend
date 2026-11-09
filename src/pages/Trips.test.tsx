@@ -57,6 +57,35 @@ describe('Trips page', () => {
     expect(await screen.findByText(/no trips yet/i)).toBeInTheDocument();
   });
 
+  it('marks a standalone dispatch as one stop, and leaves a real trip unmarked', async () => {
+    const real = trip();
+    const single = trip({
+      id: 'd9', is_single_dispatch: true, status: 'IN_PROGRESS',
+      stops: [{ ...real.stops[0], id: 'd9', status: 'IN_TRANSIT', trip_id: null, stop_sequence: 1 }],
+    });
+    vi.mocked(tripsApi.listOrgTrips).mockResolvedValue(ok([single, real]));
+    render(<Trips />, { wrapper: MemoryRouter });
+
+    expect(await screen.findAllByText('One stop')).toHaveLength(1);
+    const cards = screen.getAllByText('MH12 AB 1234').map(el => el.closest('.section-card') as HTMLElement);
+    expect(within(cards[0]).getByText('One stop')).toBeInTheDocument();
+    expect(within(cards[1]).queryByText('One stop')).not.toBeInTheDocument();
+  });
+
+  it("shows a cancelled one-stop trip's own status, not the derived COMPLETED", async () => {
+    const base = trip();
+    vi.mocked(tripsApi.listOrgTrips).mockResolvedValue(ok([trip({
+      id: 'd9', is_single_dispatch: true, status: 'COMPLETED',
+      stops: [{ ...base.stops[0], id: 'd9', status: 'CANCELLED', trip_id: null, stop_sequence: 1 }],
+    })]));
+    render(<Trips />, { wrapper: MemoryRouter });
+
+    await screen.findByText('One stop');
+    // Once on the card header and once on its stop row.
+    expect(screen.getAllByText(/^cancelled$/i)).toHaveLength(2);
+    expect(screen.queryByText('COMPLETED')).not.toBeInTheDocument();
+  });
+
   it('lists a trip with its vehicle, status and ordered stops', async () => {
     vi.mocked(tripsApi.listOrgTrips).mockResolvedValue(ok([trip()]));
     render(<Trips />, { wrapper: MemoryRouter });

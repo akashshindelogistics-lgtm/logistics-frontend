@@ -26,7 +26,7 @@ test.describe('Multi-stop trips', () => {
     await api(page, 'post', `/api/orgs/${org.id}/customers`, { name: c2, address: 'b', latitude: 19.1, longitude: 72.9 });
 
     await page.goto('/trips');
-    await expect(page.getByRole('heading', { level: 1, name: 'Multi-stop Trips' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Trips', exact: true })).toBeVisible();
     await expect(page.getByText(/no trips yet/i)).toBeVisible();
 
     await page.getByRole('button', { name: /plan a trip/i }).click();
@@ -49,6 +49,36 @@ test.describe('Multi-stop trips', () => {
     await page.goto('/dispatches');
     await expect(page.getByText('Trip · stop 1')).toBeVisible({ timeout: 8000 });
     await expect(page.getByText('Trip · stop 2')).toBeVisible();
+  });
+
+  test('a standalone dispatch is listed as a one-stop trip with its own status', async ({ page }) => {
+    const org = await registerOrg(page, `Trip Single ${uid()}`);
+    const stock = `Cement ${uid()}`;
+    const reg = `TS${uid().toUpperCase()}`;
+    const customerName = `Solo ${uid()}`;
+
+    await api(page, 'post', `/api/orgs/${org.id}/vehicles`, { registration_number: reg, capacity: 100000, unit: 'MetricTon' });
+    const driver = await api(page, 'post', `/api/orgs/${org.id}/drivers`, { name: 'Trip Driver', license_number: `L${uid()}`, phone: '0' });
+    await api(page, 'put', `/api/vehicles/${encodeURIComponent(reg)}/driver`, { driver_id: driver.data.id });
+    const godown = await api(page, 'post', `/api/orgs/${org.id}/godowns`, { name: 'G', address: '1 Rd' });
+    await api(page, 'post', `/api/godowns/${godown.data.id}/stock`, { description: stock, quantity: 500, volume_in_size: 1 });
+    const customer = await api(page, 'post', `/api/orgs/${org.id}/customers`, { name: customerName, address: 'a', latitude: 19.0, longitude: 72.8 });
+    const dispatch = await api(page, 'post', `/api/orgs/${org.id}/dispatch`, {
+      customer_id: customer.data.id,
+      line_items: [{ stock_description: stock, requested_quantity: 10 }],
+    });
+
+    await page.goto('/trips');
+    const card = page.locator('.section-card', { hasText: customerName });
+    await expect(card).toBeVisible({ timeout: 8000 });
+    await expect(card.getByText('One stop')).toBeVisible();
+    await expect(card.getByText(reg)).toBeVisible();
+
+    // A cancelled dispatch shows as cancelled, not the COMPLETED the API derives.
+    await api(page, 'put', `/api/dispatches/${dispatch.data.id}/status`, { status: 'CANCELLED' });
+    await page.reload();
+    await expect(card.locator('.section-card-header').getByText(/cancelled/i)).toBeVisible({ timeout: 8000 });
+    await expect(card.getByText('COMPLETED')).toHaveCount(0);
   });
 
   test('the route map shows the vehicle and every located stop, and hides again on toggle', async ({ page }) => {
