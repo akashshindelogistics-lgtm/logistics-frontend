@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://github.com/akashshindelogistics-lgtm/logistics-frontend/compare/v0.17.0...v0.18.0) (2026-11-09)
+
+
+### Features
+
+* **agents:** add the Agent Inbox page ([eb074b4](https://github.com/akashshindelogistics-lgtm/logistics-frontend/commit/eb074b4f0b4fb6608a95caae12714e72c2404c4d))
+
 ## [0.17.0](https://github.com/akashshindelogistics-lgtm/logistics-frontend/compare/v0.16.0...v0.17.0) (2026-11-09)
 
 
