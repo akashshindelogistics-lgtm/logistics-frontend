@@ -6,13 +6,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 22px 26px;
+  padding: 18px 24px;
   border-radius: var(--radius-lg);
-  background:
-    radial-gradient(90% 140% at 100% 0%, var(--accent-glow), transparent 55%),
-    linear-gradient(120deg, var(--hero-a), var(--hero-b));
+  background: linear-gradient(120deg, var(--hero-a), var(--hero-b));
   border: 1px solid var(--hero-line);
-  box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
 }
@@ -20,13 +17,13 @@
 /* Overlapping 3D icon cluster on the right of the greeting */
 .dash-hero-art {
   position: relative;
-  width: 170px;
-  height: 96px;
+  width: 140px;
+  height: 76px;
   flex-shrink: 0;
 }
 .dash-hero-art .icon-3d { position: absolute; }
 .dash-hero-art-back  { left: 0;    top: 4px;  opacity: .9; transform: rotate(-8deg); }
-.dash-hero-art-main  { left: 44px; top: 4px; }
+.dash-hero-art-main  { left: 36px; top: 2px; }
 .dash-hero-art-front { right: 0;   bottom: 0; transform: rotate(6deg); }
 
 @media (max-width: 640px) {
@@ -41,8 +38,8 @@
 }
 
 .dash-hero-title {
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 700;
   color: var(--hero-fg);
   letter-spacing: -.5px;
 }
@@ -62,8 +59,9 @@
 .card-green  { --card: var(--stat-4); --card-bg: var(--stat-4-bg); --card-line: var(--stat-4-line); }
 
 .card-blue, .card-amber, .card-purple, .card-green {
-  background: linear-gradient(160deg, var(--card-bg) 0%, var(--surface) 78%);
-  border-color: var(--card-line);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm);
 }
 
 .card-blue .stat-icon, .card-amber .stat-icon,
@@ -75,3 +73,109 @@
 
 .card-blue .stat-value, .card-amber .stat-value,
 .card-purple .stat-value, .card-green .stat-value { color: var(--card); }
+
+/* The icon is the card's only tint, so all four carry the same colour weight */
+.dash-stat { padding: 18px 20px; gap: 6px; }
+.dash-stat .stat-label { font-weight: 600; }
+.dash-stat .stat-value { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dash-stat::after { display: none; }
+.dash-stat .stat-icon.stat-icon-3d { width: 36px; height: 36px; border-radius: 10px; background: var(--card-bg) !important; }
+
+.stat-note {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-hero-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hero-sub);
+  margin-bottom: 2px;
+}
+
+/* Recent orders beside the operational charts */
+.dash-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 16px;
+  align-items: start;
+}
+.dash-columns-single { grid-template-columns: minmax(0, 1fr); }
+.dash-insights { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.dash-table th, .dash-table td { padding-left: 16px; padding-right: 12px; }
+.dash-when { white-space: nowrap; }
+
+@media (max-width: 1180px) {
+  .dash-columns { grid-template-columns: minmax(0, 1fr); }
+}
+
+.insight-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px 20px 18px;
+}
+.insight-title { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.insight-sub { font-size: 12.5px; color: var(--text-3); margin-top: 1px; }
+
+/* Pipeline: one labelled row per stage, with a thin bar for its share */
+.pipeline-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.pipeline-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--text-2); }
+.pipeline-count { color: var(--text-1); font-weight: 600; font-variant-numeric: tabular-nums; }
+.pipeline-track { height: 6px; margin-top: 4px; border-radius: 3px; background: var(--border2); overflow: hidden; }
+.pipeline-fill { display: block; height: 100%; min-width: 3px; border-radius: 3px; }
+
+/* Volume: thin bars on one quiet baseline; each column is the hover target */
+.volume-chart { display: flex; gap: 2px; margin-top: 14px; }
+.volume-col { flex: 1; min-width: 0; outline: none; display: flex; flex-direction: column; }
+.volume-track {
+  position: relative;
+  height: 96px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+}
+.volume-bar {
+  width: 100%;
+  max-width: 14px;
+  background: var(--brand);
+  border-radius: 4px 4px 0 0;
+  transition: opacity .12s;
+}
+.volume-bar-zero { height: 2px; background: var(--border); border-radius: 0; }
+.volume-chart:hover .volume-col:not(.is-active) .volume-bar:not(.volume-bar-zero) { opacity: .45; }
+.volume-col:focus-visible .volume-track { outline: 2px solid var(--brand); outline-offset: 1px; border-radius: 2px; }
+
+.volume-peak {
+  position: absolute;
+  top: -2px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+.volume-tip {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--text-1);
+  color: var(--surface);
+  font-size: 11.5px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.volume-tip-start { left: 0; transform: none; }
+.volume-tip-end { left: auto; right: 0; transform: none; }
+.volume-day { margin-top: 5px; font-size: 10.5px; color: var(--text-3); white-space: nowrap; display: flex; justify-content: center; height: 16px; }
+.volume-col:first-child .volume-day { justify-content: flex-start; }
+.volume-col:last-child .volume-day { justify-content: flex-end; }
