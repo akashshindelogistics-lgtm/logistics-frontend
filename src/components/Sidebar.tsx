@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { IconGrid, IconBuilding, IconTruck, IconUsers, IconPackage, IconDispatch, IconChart, IconX, IconSun, IconMoon } from './Icons';
 import { getOrgName, getOrgId, clearAuth, isLoggedIn, isAdmin } from '../api/auth';
-import { useTheme } from '../lib/theme';
+import { PALETTES, useTheme } from '../lib/theme';
 import { m } from 'motion/react';
 import { useTransitionClick } from '../lib/viewTransition';
 import './Sidebar.css';
@@ -54,7 +54,7 @@ function SidebarLink({ href, end, label, Icon }: {
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, palette, setPalette } = useTheme();
   const loggedIn = isLoggedIn();
   const orgName = getOrgName();
   const orgId = getOrgId();
@@ -95,6 +95,20 @@ export default function Sidebar() {
           return <SidebarLink key={to} href={href} end={to === '/'} label={label} Icon={Icon} />;
         })}
       </nav>
+
+      <div className="sidebar-palette" role="radiogroup" aria-label="Colour theme">
+        {PALETTES.map(p => (
+          <label key={p.id} className="sidebar-palette-swatch" title={p.label} style={{ background: p.swatch }}>
+            <input
+              type="radio"
+              name="palette"
+              aria-label={p.label}
+              checked={palette === p.id}
+              onChange={() => setPalette(p.id)}
+            />
+          </label>
+        ))}
+      </div>
 
       <button
         type="button"

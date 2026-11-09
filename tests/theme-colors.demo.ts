@@ -35,6 +35,7 @@ test('Oxford & Claret colour theme', async ({ page }) => {
   const tag = uid().toUpperCase().slice(-4);
   const stock = `Red Clay Bricks ${uid()}`;
   const org = await registerOrg(page, `Palette Demo ${uid()}`);
+  await page.getByRole('radio', { name: 'Heritage' }).check();
 
   await test.step('Seed a fleet and dispatches in several lifecycle stages', async () => {
     for (const [i, name] of ['Sunil Jadhav', 'Prakash More', 'Anil Pawar', 'Ravi Shinde'].entries()) {

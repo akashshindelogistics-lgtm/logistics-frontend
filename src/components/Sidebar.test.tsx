@@ -119,4 +119,18 @@ describe('Sidebar', () => {
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     expect(screen.getByRole('button', { name: /switch to light theme/i })).toBeInTheDocument();
   });
+
+  it('applies and persists the palette picked in the swatches', async () => {
+    const user = userEvent.setup();
+    vi.mocked(authApi.isLoggedIn).mockReturnValue(false);
+    vi.mocked(authApi.getOrgName).mockReturnValue(null);
+    vi.mocked(authApi.getOrgId).mockReturnValue(null);
+    renderSidebar();
+
+    await user.click(screen.getByRole('radio', { name: 'Iris' }));
+
+    expect(screen.getByRole('radio', { name: 'Iris' })).toBeChecked();
+    expect(document.documentElement.getAttribute('data-palette')).toBe('iris');
+    expect(localStorage.getItem('logi_palette')).toBe('iris');
+  });
 });
