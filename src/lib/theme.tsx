@@ -21,6 +21,7 @@ export const PALETTES = [
   { id: 'pine', label: 'Pine', swatch: '#2a9d8f' },
   { id: 'iris', label: 'Iris', swatch: '#8b74e8' },
   { id: 'heritage', label: 'Heritage', swatch: '#b0476b' },
+  { id: 'molten', label: 'Molten', swatch: '#f26b1d' },
 ] as const;
 
 export type Palette = (typeof PALETTES)[number]['id'];

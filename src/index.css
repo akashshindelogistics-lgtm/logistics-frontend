@@ -292,6 +292,33 @@
   --accent: #b4a5f2; --accent-glow: rgba(180,165,242,.16); --sidebar-accent: #b4a5f2;
 }
 
+/* Molten: molten orange on fog silver (light) and gunmetal night (dark). Sets
+   its own surfaces, since the shared ones above would tint them orange. The
+   :not() matches the shared rules' specificity, so these win by coming later. */
+:root[data-palette="molten"]:not([data-palette="heritage"]) {
+  --brand: #c4500c; --brand-2: #e8641a; --brand-dark: #a6430a; --brand-light: #fcebe0;
+  --brand-glow: rgba(232,100,26,.16); --on-brand: #ffffff;
+  --accent: #e8641a; --accent-glow: rgba(232,100,26,.22); --sidebar-accent: #ff8a3d;
+
+  --bg: #e6e9ec; --surface: #f8f9fa; --border: #d2d7dc; --border2: #e1e4e8;
+  --text-1: #1d2227; --text-2: #4a525b; --text-3: #7d8690;
+  --hero-b: #eef0f2;
+  --sidebar-bg: #23292f; --sidebar-bg-2: #2c333a;
+  --sidebar-text: #eef1f4; --sidebar-muted: #a9b2bb; --sidebar-faint: #6b757f;
+  --row-hover: #f0f2f4; --skeleton-1: #eceef1; --skeleton-2: #dde1e5;
+}
+:root[data-palette="molten"]:not([data-palette="heritage"])[data-theme="dark"] {
+  --brand: #ff8a3d; --brand-2: #f26b1d; --brand-dark: #ffa366; --brand-light: #3b2b22;
+  --brand-glow: rgba(255,138,61,.2); --on-brand: #15191d;
+  --accent: #ff8a3d; --accent-glow: rgba(255,138,61,.16); --sidebar-accent: #ff8a3d;
+
+  --bg: #181c20; --surface: #20262b; --border: #323a42; --border2: #2a3137;
+  --text-1: #e9edf1; --text-2: #b4bcc5; --text-3: #7f8993;
+  --hero-b: #262d33;
+  --sidebar-bg: #111417; --sidebar-bg-2: #181c20;
+  --row-hover: #283037; --skeleton-1: #283037; --skeleton-2: #323a42;
+}
+
 html, body { height: 100%; }
 
 body {

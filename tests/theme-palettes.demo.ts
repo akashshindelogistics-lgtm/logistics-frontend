@@ -5,7 +5,7 @@ import { registerOrg, uid } from './helpers';
  * Walks through every colour palette in the sidebar picker, in light and dark.
  * Watch it with `npm run test:e2e:demo:theme-palettes` (headed, slowed).
  */
-const PALETTES = ['Graphite', 'Cobalt', 'Pine', 'Iris', 'Heritage'];
+const PALETTES = ['Graphite', 'Cobalt', 'Pine', 'Iris', 'Heritage', 'Molten'];
 
 test('Choosing a colour palette', async ({ page }) => {
   test.slow();
