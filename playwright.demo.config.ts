@@ -88,6 +88,8 @@ export default defineConfig({
       env: {
         PORT: apiPort,
         DATABASE_URL: databaseURL,
+        // So customer messages carry a tracking link back to this dev server.
+        PUBLIC_APP_URL: webURL,
         ...(fakeModel ? { AGENT_MODEL_URL: `http://127.0.0.1:${fakeModelPort}/v1/messages` } : {}),
       },
       reuseExistingServer: true,

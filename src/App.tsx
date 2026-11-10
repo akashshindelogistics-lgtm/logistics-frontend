@@ -18,6 +18,7 @@ import AgentInbox from './pages/AgentInbox';
 import Vendors from './pages/Vendors';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import TrackOrder from './pages/TrackOrder';
 import './App.css';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -59,6 +60,8 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        {/* Public: customers open this from their order message, without a login. */}
+        <Route path="/track/:token" element={<TrackOrder />} />
         <Route path="/*" element={<AppShell />} />
       </Routes>
     </BrowserRouter>

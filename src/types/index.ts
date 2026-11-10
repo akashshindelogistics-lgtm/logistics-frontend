@@ -240,6 +240,19 @@ export interface DispatchStatusEvent {
   changed_at: number;
 }
 
+/** What a customer sees on the public tracking link (GET /public/track/{token}). */
+export interface PublicTracking {
+  reference: string;
+  shipper: string;
+  status: DispatchStatus;
+  dispatched_at: number;
+  expected_by: number;
+  status_history: DispatchStatusEvent[];
+  delivered_at: number | null;
+  /** Only while LOADED or IN_TRANSIT and the vehicle has reported a position. */
+  vehicle_position: { latitude: number; longitude: number; updated_at: number } | null;
+}
+
 export interface ProofOfDelivery {
   receiver_name: string;
   signature_or_photo_url: string;
