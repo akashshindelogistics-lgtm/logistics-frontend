@@ -51,7 +51,8 @@ test.describe('Dashboard overview', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
-    const reports = page.getByRole('link', { name: 'Reports' });
+    // The sidebar's link; the dashboard header has its own Reports button.
+    const reports = page.getByRole('navigation').getByRole('link', { name: 'Reports' });
     await expect(reports).toBeHidden();
     await page.getByRole('button', { name: 'Open navigation' }).click();
     await expect(reports).toBeVisible();
