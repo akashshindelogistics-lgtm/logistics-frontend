@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.19.0](https://github.com/akashshindelogistics-lgtm/logistics-frontend/compare/v0.18.0...v0.19.0) (2026-11-10)
+
+
+### Features
+
+* **dashboard:** selectable colour palettes and control-tower dashboard ([766c48b](https://github.com/akashshindelogistics-lgtm/logistics-frontend/commit/766c48b1a9cf10a1674e9cbeb4dee7570725cec5))
+* **theme:** add the Molten palette ([cca9632](https://github.com/akashshindelogistics-lgtm/logistics-frontend/commit/cca963275f553b2fd24d64874f4fd14a681a29e2))
+
 ## [0.18.0](https://github.com/akashshindelogistics-lgtm/logistics-frontend/compare/v0.17.0...v0.18.0) (2026-11-09)
 
 
