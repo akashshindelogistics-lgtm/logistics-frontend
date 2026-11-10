@@ -79,14 +79,7 @@ test.describe('Vehicle visuals', () => {
     await expect(page.getByTestId('vehicle-activity')).toHaveText('On a trip');
   });
 
-  test('3D icons decorate the dashboard and login page', async ({ page }) => {
-    await registerOrg(page, `Visuals Icons ${uid()}`);
-    await page.goto('/');
-    const card = page.locator('.stat-card').filter({ hasText: 'Fleet Vehicles' });
-    await expect(card.locator('img[data-icon3d="truck"]')).toBeVisible({ timeout: 8000 });
-    await expect(page.locator('.dash-hero-art img')).toHaveCount(3);
-
-    await page.evaluate(() => localStorage.clear());
+  test('3D icons decorate the login page', async ({ page }) => {
     await page.goto('/login');
     await expect(page.locator('.login-brand img[data-icon3d="lorry"]')).toBeVisible();
     await expect(page.locator('.feat-icon img')).toHaveCount(4);

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { prefersReducedMotion } from '../lib/motion';
 import 'leaflet/dist/leaflet.css';
@@ -94,13 +94,10 @@ const imageIcons = new Map<string, L.DivIcon>();
 export function imagePinIcon(url: string): L.DivIcon {
   let icon = imageIcons.get(url);
   if (!icon) {
-    const img = document.createElement('img');
-    img.src = url;
-    img.alt = '';
-    img.draggable = false;
     icon = L.divIcon({
       className: 'map-pin-3d',
-      html: img,
+      // A string, not an element: one element can only sit in one marker at a time.
+      html: `<img src="${url}" alt="" draggable="false">`,
       iconSize: [46, 46],
       iconAnchor: [23, 40],
       popupAnchor: [0, -34],
@@ -115,9 +112,22 @@ interface LocationMapProps {
   height?: string;
   /** Points to join with a self-drawing line, in travel order (e.g. a trip's stops). */
   route?: [number, number][];
+  /** Zoom to show every pin once, instead of centring on the first. */
+  fitToPins?: boolean;
 }
 
-export default function LocationMap({ pins, height = '400px', route }: LocationMapProps) {
+function FitToPins({ pins }: { pins: MapPin[] }) {
+  const map = useMap();
+  const count = pins.length;
+  useEffect(() => {
+    if (count > 1) map.fitBounds(pins.map(p => [p.lat, p.lng]), { padding: [40, 40], maxZoom: 12 });
+    // Refit only when a pin appears, so refreshes don't undo the user's pan.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, count]);
+  return null;
+}
+
+export default function LocationMap({ pins, height = '400px', route, fitToPins }: LocationMapProps) {
   const center: [number, number] =
     pins.length > 0 ? [pins[0].lat, pins[0].lng] : [20.5937, 78.9629];
 
@@ -127,6 +137,7 @@ export default function LocationMap({ pins, height = '400px', route }: LocationM
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
       />
+      {fitToPins && <FitToPins pins={pins} />}
       {route && route.length > 1 && <DrawnRoute points={route} />}
       {pins.map((pin, i) => <GlidingMarker key={pin.id ?? `${i}:${pin.label}`} pin={pin} />)}
     </MapContainer>

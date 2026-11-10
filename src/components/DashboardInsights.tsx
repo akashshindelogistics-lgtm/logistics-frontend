@@ -1,35 +1,7 @@
 import { useState } from 'react';
-import type { DayBucket, PipelineStage } from '../lib/dashboardStats';
+import type { DayBucket } from '../lib/dashboardStats';
 
 const shortDay = (d: Date) => d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
-
-/** Where every order currently is. Each stage is named on its own row, so
- *  the status colours (close together for colour-blind readers) aren't the
- *  only way to tell stages apart. */
-export function PipelinePanel({ stages }: { stages: PipelineStage[] }) {
-  const total = stages.reduce((sum, s) => sum + s.count, 0);
-  return (
-    <section className="insight-card" aria-labelledby="pipeline-title">
-      <h2 id="pipeline-title" className="insight-title">Order pipeline</h2>
-      <p className="insight-sub">Where all {total} orders stand now</p>
-      <ul className="pipeline-list">
-        {stages.map(s => (
-          <li key={s.key}>
-            <div className="pipeline-row">
-              <span className="pipeline-label">{s.label}</span>
-              <strong className="pipeline-count">{s.count}</strong>
-            </div>
-            <div className="pipeline-track" aria-hidden="true">
-              {s.count > 0 && (
-                <span className="pipeline-fill" style={{ width: `${(s.count / total) * 100}%`, background: `var(--${s.color})` }} />
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
 
 /** Orders raised per day. Hovering or focusing a day shows its exact count. */
 export function VolumePanel({ days }: { days: DayBucket[] }) {

@@ -4,7 +4,7 @@ import { IconGrid, IconInbox, IconBuilding, IconTruck, IconUsers, IconPackage, I
 import { getOrgName, getOrgId, clearAuth, isLoggedIn, isAdmin } from '../api/auth';
 import { listAgentActions } from '../api/agents';
 import { onAgentInboxChanged } from '../lib/agentInbox';
-import { useTheme } from '../lib/theme';
+import { PALETTES, useTheme } from '../lib/theme';
 import { m } from 'motion/react';
 import { useTransitionClick } from '../lib/viewTransition';
 import './Sidebar.css';
@@ -94,7 +94,7 @@ function SidebarLink({ href, end, label, Icon, onNavigate, count = 0 }: {
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme, palette, setPalette } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const loggedIn = isLoggedIn();
   const orgName = getOrgName();
@@ -155,6 +155,20 @@ export default function Sidebar() {
             </div>
           ))}
         </nav>
+
+        <div className="sidebar-palette" role="radiogroup" aria-label="Colour theme">
+          {PALETTES.map(p => (
+            <label key={p.id} className="sidebar-palette-swatch" title={p.label} style={{ background: p.swatch }}>
+              <input
+                type="radio"
+                name="palette"
+                aria-label={p.label}
+                checked={palette === p.id}
+                onChange={() => setPalette(p.id)}
+              />
+            </label>
+          ))}
+        </div>
 
         <button
           type="button"

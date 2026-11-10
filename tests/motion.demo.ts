@@ -3,7 +3,7 @@ import { registerOrg, uid } from './helpers';
 
 /**
  * A narrated walk through the **motion** in the dashboard on its own: stat
- * cards that rise and count up, the sidebar highlight sliding between pages
+ * cards that rise, the sidebar highlight sliding between pages
  * as they cross-fade, table rows sliding in and out, a vehicle's icon
  * morphing from the fleet list into its page, the dispatch lifecycle track
  * filling as a shipment advances, a truck gliding across the live map between
@@ -83,9 +83,9 @@ test('motion in the UI', async ({ page }) => {
     await page.waitForTimeout(1000);
   });
 
-  await test.step('The dashboard: stat cards rise in one after another and count up', async () => {
+  await test.step('The dashboard: KPI cards rise in one after another', async () => {
     await page.goto('/');
-    await expect(page.locator('.stat-card')).toHaveCount(4);
+    await expect(page.locator('.kpi')).toHaveCount(4);
     await page.waitForTimeout(2500);
   });
 

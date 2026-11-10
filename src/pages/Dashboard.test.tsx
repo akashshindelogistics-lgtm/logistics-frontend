@@ -2,13 +2,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import * as orgsApi from '../api/orgs';
 import * as vehiclesApi from '../api/vehicles';
 import * as customersApi from '../api/customers';
 import * as dispatchesApi from '../api/dispatches';
 import type { DispatchOrder } from '../types';
 
-vi.mock('../api/orgs');
+vi.mock('../components/LocationMap', () => ({ default: ({ pins }: { pins: unknown[] }) => <div data-testid="map">{pins.length}</div> }));
 vi.mock('../api/vehicles');
 vi.mock('../api/customers');
 vi.mock('../api/dispatches');
@@ -37,23 +36,34 @@ function renderPage() {
 describe('Dashboard page', () => {
   beforeEach(() => vi.resetAllMocks());
 
-  it('renders each stat card with the count from its endpoint', async () => {
-    vi.mocked(orgsApi.listOrgs).mockResolvedValue(ok([{}, {}] as never));
-    vi.mocked(vehiclesApi.listVehicles).mockResolvedValue(ok([{}, {}, {}] as never));
-    vi.mocked(customersApi.listCustomers).mockResolvedValue(ok([{}] as never));
-    vi.mocked(dispatchesApi.listDispatches).mockResolvedValue(ok([order(), order({ id: 'b' })]));
+  it('derives the KPIs, map pins and pipeline from live dispatches', async () => {
+    vi.mocked(vehiclesApi.listVehicles).mockResolvedValue(ok([
+      { registration_number: 'MH01AB1234', location: { latitude: 18, longitude: 73, timestamp: 1 } },
+      { registration_number: 'MH02' },
+    ] as never));
+    vi.mocked(customersApi.listCustomers).mockResolvedValue(ok([{ id: 'c1', name: 'Hinjewadi Site' }] as never));
+    vi.mocked(dispatchesApi.listDispatches).mockResolvedValue(ok([order({ status: 'IN_TRANSIT' })]));
 
     renderPage();
 
-    const orgCard = (await screen.findByText('Organizations')).closest('a')!;
-    expect(within(orgCard).getByText('2')).toBeInTheDocument();
-    expect(within(screen.getByText('Fleet Vehicles').closest('a')!).getByText('3')).toBeInTheDocument();
-    expect(within(screen.getByText('Customers').closest('a')!).getByText('1')).toBeInTheDocument();
-    expect(within(screen.getByText('Dispatches').closest('a')!).getByText('2')).toBeInTheDocument();
+    const road = (await screen.findByText('On the road')).closest('a')!;
+    expect(await within(road).findByText('1')).toBeInTheDocument();
+    expect(within(screen.getByText('Fleet in use').closest('a')!).getByText('1/2')).toBeInTheDocument();
+    expect(screen.getByTestId('map')).toHaveTextContent('1');
+    expect(screen.getByText('Hinjewadi Site')).toBeInTheDocument();
+    expect(screen.getByText('Long time on the road')).toBeInTheDocument();
+  });
+
+  it('warns but keeps rendering when the data cannot be loaded', async () => {
+    vi.mocked(vehiclesApi.listVehicles).mockRejectedValue(new Error('down'));
+    vi.mocked(customersApi.listCustomers).mockResolvedValue(ok([]));
+    vi.mocked(dispatchesApi.listDispatches).mockResolvedValue(ok([]));
+
+    renderPage();
+    expect(await screen.findByRole('alert')).toHaveTextContent(/couldn.t refresh/i);
   });
 
   it('shows the five most recent dispatches, newest first', async () => {
-    vi.mocked(orgsApi.listOrgs).mockResolvedValue(ok([]));
     vi.mocked(vehiclesApi.listVehicles).mockResolvedValue(ok([]));
     vi.mocked(customersApi.listCustomers).mockResolvedValue(ok([]));
     vi.mocked(dispatchesApi.listDispatches).mockResolvedValue(
@@ -72,7 +82,6 @@ describe('Dashboard page', () => {
   });
 
   it('caps the recent list at five rows even when more dispatches exist', async () => {
-    vi.mocked(orgsApi.listOrgs).mockResolvedValue(ok([]));
     vi.mocked(vehiclesApi.listVehicles).mockResolvedValue(ok([]));
     vi.mocked(customersApi.listCustomers).mockResolvedValue(ok([]));
     vi.mocked(dispatchesApi.listDispatches).mockResolvedValue(
@@ -85,7 +94,6 @@ describe('Dashboard page', () => {
   });
 
   it('colors each recent dispatch status tag by its lifecycle stage', async () => {
-    vi.mocked(orgsApi.listOrgs).mockResolvedValue(ok([]));
     vi.mocked(vehiclesApi.listVehicles).mockResolvedValue(ok([]));
     vi.mocked(customersApi.listCustomers).mockResolvedValue(ok([]));
     vi.mocked(dispatchesApi.listDispatches).mockResolvedValue(
@@ -104,7 +112,6 @@ describe('Dashboard page', () => {
   });
 
   it('shows the "no dispatches yet" empty state when there are none', async () => {
-    vi.mocked(orgsApi.listOrgs).mockResolvedValue(ok([]));
     vi.mocked(vehiclesApi.listVehicles).mockResolvedValue(ok([]));
     vi.mocked(customersApi.listCustomers).mockResolvedValue(ok([]));
     vi.mocked(dispatchesApi.listDispatches).mockResolvedValue(ok([]));

@@ -178,6 +178,147 @@
   --skeleton-2:    #2b2823;
 }
 
+/* Selectable palettes (data-palette, set by ThemeProvider, which also always
+   sets data-theme). The tokens above are "heritage". The others share neutral,
+   non-warm surfaces faintly tinted from their brand colour, so colour stays
+   on small meaningful elements; each palette below only sets its accents. */
+:root[data-palette]:not([data-palette="heritage"]) {
+  --bg:      color-mix(in srgb, var(--brand) 3%, #f6f7f9);
+  --surface: #ffffff;
+  --border:  color-mix(in srgb, var(--brand) 6%, #e3e5ea);
+  --border2: color-mix(in srgb, var(--brand) 3%, #f0f1f4);
+
+  --text-1: #1a1c20;
+  --text-2: #4f535b;
+  --text-3: #868b95;
+
+  --hero-a:    #ffffff;
+  --hero-b:    color-mix(in srgb, var(--brand) 7%, #f6f7f9);
+  --hero-line: var(--border);
+  --hero-fg:   var(--text-1);
+  --hero-sub:  var(--text-2);
+
+  --sidebar-bg:     color-mix(in srgb, var(--brand) 10%, #15171b);
+  --sidebar-bg-2:   color-mix(in srgb, var(--brand) 10%, #1d2025);
+  --sidebar-text:   #eef0f3;
+  --sidebar-muted:  #a8adb7;
+  --sidebar-faint:  #676c77;
+  --sidebar-hover:  color-mix(in srgb, var(--sidebar-accent) 14%, transparent);
+
+  --stat-1: #3b6ea8; --stat-2: #1f8a7a; --stat-3: #a8660f; --stat-4: #7a5bb5;
+  --stat-1-bg: color-mix(in srgb, var(--stat-1) 7%, var(--surface));
+  --stat-2-bg: color-mix(in srgb, var(--stat-2) 7%, var(--surface));
+  --stat-3-bg: color-mix(in srgb, var(--stat-3) 7%, var(--surface));
+  --stat-4-bg: color-mix(in srgb, var(--stat-4) 7%, var(--surface));
+  --stat-1-line: color-mix(in srgb, var(--stat-1) 25%, var(--surface));
+  --stat-2-line: color-mix(in srgb, var(--stat-2) 25%, var(--surface));
+  --stat-3-line: color-mix(in srgb, var(--stat-3) 25%, var(--surface));
+  --stat-4-line: color-mix(in srgb, var(--stat-4) 25%, var(--surface));
+
+  --row-hover:  #f8f9fa;
+  --skeleton-1: #f1f2f4;
+  --skeleton-2: #e5e7eb;
+}
+
+:root[data-palette]:not([data-palette="heritage"])[data-theme="dark"] {
+  --bg:      color-mix(in srgb, var(--brand) 3%, #111317);
+  --surface: color-mix(in srgb, var(--brand) 3%, #191b20);
+  --border:  color-mix(in srgb, var(--brand) 6%, #2a2d33);
+  --border2: color-mix(in srgb, var(--brand) 4%, #22252a);
+
+  --text-1: #eceef2;
+  --text-2: #bcc1ca;
+  --text-3: #868b95;
+
+  --hero-a:    var(--surface);
+  --hero-b:    color-mix(in srgb, var(--brand) 8%, #191b20);
+  --hero-sub:  var(--text-2);
+
+  --sidebar-bg:     color-mix(in srgb, var(--brand) 4%, #0c0d10);
+  --sidebar-bg-2:   color-mix(in srgb, var(--brand) 4%, #131519);
+
+  --stat-1: #8fb4e3; --stat-2: #6fd0bf; --stat-3: #e5b567; --stat-4: #bda6ec;
+  --stat-1-bg: color-mix(in srgb, var(--stat-1) 10%, var(--surface));
+  --stat-2-bg: color-mix(in srgb, var(--stat-2) 10%, var(--surface));
+  --stat-3-bg: color-mix(in srgb, var(--stat-3) 10%, var(--surface));
+  --stat-4-bg: color-mix(in srgb, var(--stat-4) 10%, var(--surface));
+
+  --row-hover:  #202329;
+  --skeleton-1: #202329;
+  --skeleton-2: #2a2d33;
+}
+
+:root[data-palette="graphite"] {
+  --brand: #2b2e35; --brand-2: #5c6270; --brand-dark: #1b1d22; --brand-light: #eceef1;
+  --brand-glow: rgba(43,46,53,.14); --on-brand: #ffffff;
+  --accent: #5c6270; --accent-glow: rgba(92,98,112,.22); --sidebar-accent: #d5d9e0;
+}
+:root[data-palette="graphite"][data-theme="dark"] {
+  --brand: #e2e5ea; --brand-2: #aab0bb; --brand-dark: #f1f3f5; --brand-light: #2c2f35;
+  --brand-glow: rgba(226,229,234,.16); --on-brand: #15171b;
+  --accent: #aab0bb; --accent-glow: rgba(170,176,187,.16); --sidebar-accent: #d5d9e0;
+}
+
+:root[data-palette="cobalt"] {
+  --brand: #2b5fb8; --brand-2: #4a7fd6; --brand-dark: #234e98; --brand-light: #e9f0fa;
+  --brand-glow: rgba(43,95,184,.14); --on-brand: #ffffff;
+  --accent: #4a7fd6; --accent-glow: rgba(74,127,214,.22); --sidebar-accent: #8db4f0;
+}
+:root[data-palette="cobalt"][data-theme="dark"] {
+  --brand: #8db4f0; --brand-2: #6c9be6; --brand-dark: #a6c5f4; --brand-light: #26334a;
+  --brand-glow: rgba(141,180,240,.2); --on-brand: #10141b;
+  --accent: #8db4f0; --accent-glow: rgba(141,180,240,.16); --sidebar-accent: #8db4f0;
+}
+
+:root[data-palette="pine"] {
+  --brand: #0f6e62; --brand-2: #1f9384; --brand-dark: #0b5a50; --brand-light: #e4f2ef;
+  --brand-glow: rgba(15,110,98,.14); --on-brand: #ffffff;
+  --accent: #1f9384; --accent-glow: rgba(31,147,132,.22); --sidebar-accent: #6fd0bf;
+}
+:root[data-palette="pine"][data-theme="dark"] {
+  --brand: #6fd0bf; --brand-2: #4bb5a4; --brand-dark: #8bdccd; --brand-light: #1f3a37;
+  --brand-glow: rgba(111,208,191,.2); --on-brand: #0e1716;
+  --accent: #6fd0bf; --accent-glow: rgba(111,208,191,.16); --sidebar-accent: #6fd0bf;
+}
+
+:root[data-palette="iris"] {
+  --brand: #5b45c4; --brand-2: #7a65dc; --brand-dark: #4a37a6; --brand-light: #efecfb;
+  --brand-glow: rgba(91,69,196,.14); --on-brand: #ffffff;
+  --accent: #7a65dc; --accent-glow: rgba(122,101,220,.22); --sidebar-accent: #b4a5f2;
+}
+:root[data-palette="iris"][data-theme="dark"] {
+  --brand: #b4a5f2; --brand-2: #9583ea; --brand-dark: #c6baf5; --brand-light: #322c4d;
+  --brand-glow: rgba(180,165,242,.2); --on-brand: #13111c;
+  --accent: #b4a5f2; --accent-glow: rgba(180,165,242,.16); --sidebar-accent: #b4a5f2;
+}
+
+/* Molten: molten orange on fog silver (light) and gunmetal night (dark). Sets
+   its own surfaces, since the shared ones above would tint them orange. The
+   :not() matches the shared rules' specificity, so these win by coming later. */
+:root[data-palette="molten"]:not([data-palette="heritage"]) {
+  --brand: #c4500c; --brand-2: #e8641a; --brand-dark: #a6430a; --brand-light: #fcebe0;
+  --brand-glow: rgba(232,100,26,.16); --on-brand: #ffffff;
+  --accent: #e8641a; --accent-glow: rgba(232,100,26,.22); --sidebar-accent: #ff8a3d;
+
+  --bg: #e6e9ec; --surface: #f8f9fa; --border: #d2d7dc; --border2: #e1e4e8;
+  --text-1: #1d2227; --text-2: #4a525b; --text-3: #7d8690;
+  --hero-b: #eef0f2;
+  --sidebar-bg: #23292f; --sidebar-bg-2: #2c333a;
+  --sidebar-text: #eef1f4; --sidebar-muted: #a9b2bb; --sidebar-faint: #6b757f;
+  --row-hover: #f0f2f4; --skeleton-1: #eceef1; --skeleton-2: #dde1e5;
+}
+:root[data-palette="molten"]:not([data-palette="heritage"])[data-theme="dark"] {
+  --brand: #ff8a3d; --brand-2: #f26b1d; --brand-dark: #ffa366; --brand-light: #3b2b22;
+  --brand-glow: rgba(255,138,61,.2); --on-brand: #15191d;
+  --accent: #ff8a3d; --accent-glow: rgba(255,138,61,.16); --sidebar-accent: #ff8a3d;
+
+  --bg: #181c20; --surface: #20262b; --border: #323a42; --border2: #2a3137;
+  --text-1: #e9edf1; --text-2: #b4bcc5; --text-3: #7f8993;
+  --hero-b: #262d33;
+  --sidebar-bg: #111417; --sidebar-bg-2: #181c20;
+  --row-hover: #283037; --skeleton-1: #283037; --skeleton-2: #323a42;
+}
+
 html, body { height: 100%; }
 
 body {

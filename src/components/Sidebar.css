@@ -33,6 +33,36 @@
   box-shadow: none;
 }
 
+.sidebar-palette {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 10px 0;
+  padding: 8px 12px;
+}
+
+.sidebar-palette-swatch {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  cursor: pointer;
+}
+
+.sidebar-palette-swatch input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.sidebar-palette-swatch:has(input:checked) { outline-color: var(--sidebar-text); }
+.sidebar-palette-swatch:has(input:focus-visible) { outline-color: var(--sidebar-accent); }
+
 .sidebar-logo-name {
   display: block;
   font-weight: 700;

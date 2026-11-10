@@ -22,16 +22,16 @@ async function seedOneDispatch(page: Page, orgId: string) {
 }
 
 test.describe('Dashboard overview', () => {
-  test('greets the org and shows the pipeline and volume from real orders', async ({ page }) => {
+  test('shows the pipeline and volume from real orders', async ({ page }) => {
     const org = await registerOrg(page, `Overview ${uid()}`);
     await seedOneDispatch(page, org.id);
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(new RegExp(`^Good (morning|afternoon|evening), ${org.name}$`));
-    await expect(page.locator('.dash-stat', { hasText: 'Dispatches' })).toContainText('1 in progress');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(/^Good (morning|afternoon|evening)$/);
+    await expect(page.locator('.dash-date')).toContainText(org.name);
 
-    const pipeline = page.getByRole('region', { name: 'Order pipeline' });
-    await expect(pipeline.locator('li', { hasText: 'Waiting' })).toContainText('1');
+    const pipeline = page.getByRole('region', { name: 'Dispatch pipeline' });
+    await expect(pipeline.locator('.pipe-stage', { hasText: 'Pending' })).toContainText('1');
 
     const days = page.getByRole('listitem').filter({ has: page.locator('.volume-track') });
     await expect(days).toHaveCount(14);
@@ -43,7 +43,7 @@ test.describe('Dashboard overview', () => {
     await registerOrg(page, `Empty Overview ${uid()}`);
     await page.goto('/');
     await expect(page.getByText(/no dispatches yet/i)).toBeVisible();
-    await expect(page.getByRole('region', { name: 'Order pipeline' })).toHaveCount(0);
+    await expect(page.getByRole('region', { name: 'Order volume' })).toHaveCount(0);
   });
 
   test('opens the navigation as a drawer at phone width', async ({ page }) => {
@@ -51,7 +51,8 @@ test.describe('Dashboard overview', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
 
-    const reports = page.getByRole('link', { name: 'Reports' });
+    // The sidebar's link; the dashboard header has its own Reports button.
+    const reports = page.getByRole('navigation').getByRole('link', { name: 'Reports' });
     await expect(reports).toBeHidden();
     await page.getByRole('button', { name: 'Open navigation' }).click();
     await expect(reports).toBeVisible();

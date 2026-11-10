@@ -63,6 +63,22 @@ describe('ThemeProvider / useTheme', () => {
     expect(localStorage.getItem('logi_theme')).toBe('light');
   });
 
+  it('defaults to graphite, ignoring an unknown stored palette', () => {
+    localStorage.setItem('logi_palette', 'neon');
+    mockMatchMedia(false);
+    render(<ThemeProvider><Probe /></ThemeProvider>);
+
+    expect(document.documentElement.getAttribute('data-palette')).toBe('graphite');
+  });
+
+  it('restores a stored palette', () => {
+    localStorage.setItem('logi_palette', 'pine');
+    mockMatchMedia(false);
+    render(<ThemeProvider><Probe /></ThemeProvider>);
+
+    expect(document.documentElement.getAttribute('data-palette')).toBe('pine');
+  });
+
   it('throws when useTheme is used outside a ThemeProvider', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<Probe />)).toThrow('useTheme must be used within a ThemeProvider');

@@ -122,10 +122,4 @@ test('3D icons and vehicle models', async ({ page }) => {
     await page.waitForTimeout(1500);
   });
 
-  await test.step('Back on the dashboard, every stat card carries a 3D icon', async () => {
-    await page.goto('/');
-    await expect(page.locator('.stat-card img[data-icon3d]')).toHaveCount(4, { timeout: 8000 });
-    await page.locator('.stat-card').filter({ hasText: 'Fleet Vehicles' }).hover();
-    await page.waitForTimeout(2500);
-  });
 });
