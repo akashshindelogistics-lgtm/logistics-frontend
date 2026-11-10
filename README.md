@@ -57,11 +57,13 @@ E2E_BASE_URL=http://localhost:5174 npm run test:e2e   # against a dev server on 
 
 Each opens a real browser window, slowed down, and records a video under
 `test-results/`. They start the Vite dev server, and the API with `cargo run`
-in `BACKEND_DIR` (default `../logistics-backend`), unless they're already
-running.
+in `BACKEND_DIR` (default `../logistics-backend`) on its own `logistics_e2e`
+database, unless they're already running. A running API keeps whatever database
+it was started with.
 
 ```bash
 npm run test:e2e:demo                     # the whole product, end to end
+npm run test:e2e:demo:agent-inbox         # agents asking for decisions (scripted model, no credits needed)
 npm run test:e2e:demo:reports             # operations reporting
 npm run test:e2e:demo:roles               # role-scoped team members
 npm run test:e2e:demo:notifications       # dispatch notifications
@@ -75,6 +77,7 @@ npm run test:e2e:demo:motion              # transitions, lifecycle track, glidin
 npm run test:e2e:demo:vendors             # vehicle vendors
 npm run test:e2e:demo:hired-vehicles      # dispatching on a hired truck
 npm run test:e2e:demo:vendor-payments     # paying vendors, hired-transport report
+npm run test:e2e:demo:dashboard          # the dashboard overview, dark mode and phone drawer
 npm run test:e2e:demo:driver-tracking     # a phone's positions on the dashboard
 npm run test:e2e:demo:driver-app          # the driver app download card
 npm run test:e2e:demo:phone-pairing       # pairing a driver's phone by QR code

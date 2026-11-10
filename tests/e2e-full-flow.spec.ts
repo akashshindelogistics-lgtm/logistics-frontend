@@ -474,6 +474,14 @@ test('full logistics workflow: register, login, warehouse, fleet, delivery, bill
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible({ timeout: 8000 });
     await expect(page.locator('.kpi').filter({ hasText: 'Fleet in use' })).toBeVisible();
     await expect(page.locator('.kpi').filter({ hasText: 'Dispatches' })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Dispatch pipeline' })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Order volume' })).toBeVisible();
+  });
+
+  await test.step('See the Agent Inbox, with agents off until an admin turns them on', async () => {
+    await page.goto('/agents');
+    await expect(page.getByRole('heading', { name: 'Agent Inbox' })).toBeVisible({ timeout: 8000 });
+    await expect(page.getByText(/agents are off/i)).toBeVisible();
   });
 
   await test.step('Sign out', async () => {

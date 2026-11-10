@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import * as authApi from '../api/auth';
+import * as agentsApi from '../api/agents';
 import { ThemeProvider } from '../lib/theme';
 
 const navigateMock = vi.fn();
@@ -12,6 +13,7 @@ vi.mock('react-router-dom', async importOriginal => {
   return { ...actual, useNavigate: () => navigateMock };
 });
 vi.mock('../api/auth');
+vi.mock('../api/agents');
 
 function renderSidebar() {
   return render(
@@ -26,8 +28,32 @@ function renderSidebar() {
 describe('Sidebar', () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    vi.mocked(agentsApi.listAgentActions).mockResolvedValue({ success: true, message: '', data: [] });
     localStorage.clear();
     document.documentElement.removeAttribute('data-theme');
+  });
+
+  it('shows how many agent actions are waiting', async () => {
+    vi.mocked(authApi.isLoggedIn).mockReturnValue(true);
+    vi.mocked(authApi.getOrgId).mockReturnValue('o1');
+    vi.mocked(agentsApi.listAgentActions).mockResolvedValue({
+      success: true,
+      message: '',
+      data: [{ id: 'a1' }, { id: 'a2' }] as never,
+    });
+    renderSidebar();
+
+    expect(await screen.findByLabelText('2 waiting')).toBeInTheDocument();
+    expect(agentsApi.listAgentActions).toHaveBeenCalledWith('o1', 'PENDING_APPROVAL');
+  });
+
+  it('shows no count, and makes no request, when logged out', () => {
+    vi.mocked(authApi.isLoggedIn).mockReturnValue(false);
+    vi.mocked(authApi.getOrgId).mockReturnValue(null);
+    renderSidebar();
+
+    expect(screen.queryByLabelText(/waiting/)).not.toBeInTheDocument();
+    expect(agentsApi.listAgentActions).not.toHaveBeenCalled();
   });
 
   it('shows the org badge and a sign-out button when logged in', () => {

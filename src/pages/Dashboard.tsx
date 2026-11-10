@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listVehicles, listOrgVehicleMaintenance } from '../api/vehicles';
 import { listCustomers } from '../api/customers';
@@ -8,6 +8,8 @@ import { getOrgId, getOrgName } from '../api/auth';
 import Icon3D from '../components/Icon3D';
 import LocationMap, { type MapPin } from '../components/LocationMap';
 import { IconCheck } from '../components/Icons';
+import { VolumePanel } from '../components/DashboardInsights';
+import { dailyVolume } from '../lib/dashboardStats';
 import type { Customer, DispatchOrder, DispatchStatus, OpsReport, Vehicle, VehicleMaintenance } from '../types';
 import './page.css';
 import './Dashboard.css';
@@ -100,6 +102,7 @@ export default function Dashboard() {
   const attention = attentionItems(orders, maintenance, now);
   const urgent = attention.filter(a => a.severity === 'urgent').length;
   const recent = [...orders].sort((a, b) => b.dispatched_at - a.dispatched_at).slice(0, 5);
+  const dailyOrders = useMemo(() => dailyVolume(orders, new Date()), [orders]);
   const customerName = (id: string) => customers.find(c => c.id === id)?.name ?? '—';
 
   const located = vehicles.filter(v => v.location);
@@ -243,21 +246,24 @@ export default function Dashboard() {
         </section>
       </div>
 
-      <section className="dash-panel dash-pipeline" aria-label="Dispatch pipeline">
-        <div className="dash-panel-head"><h2>Dispatch pipeline</h2></div>
-        <div className="pipe">
-          {PIPELINE.map(stage => {
-            const n = count(stage.statuses);
-            return (
-              <Link key={stage.label} to="/dispatches" className="pipe-stage">
-                <span className="pipe-count">{loading ? '–' : n}</span>
-                <span className="pipe-label">{stage.label}</span>
-                <span className="pipe-track"><span style={{ width: `${(n / maxStage) * 100}%` }} /></span>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+      <div className="dash-flow">
+        <section className="dash-panel dash-pipeline" aria-label="Dispatch pipeline">
+          <div className="dash-panel-head"><h2>Dispatch pipeline</h2></div>
+          <div className="pipe">
+            {PIPELINE.map(stage => {
+              const n = count(stage.statuses);
+              return (
+                <Link key={stage.label} to="/dispatches" className="pipe-stage">
+                  <span className="pipe-count">{loading ? '–' : n}</span>
+                  <span className="pipe-label">{stage.label}</span>
+                  <span className="pipe-track"><span style={{ width: `${(n / maxStage) * 100}%` }} /></span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+        {orders.length > 0 && <VolumePanel days={dailyOrders} />}
+      </div>
 
       <div className="table-card">
         <div className="table-toolbar">

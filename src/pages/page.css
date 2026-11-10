@@ -1,7 +1,9 @@
 /* ── Page shell ── */
 .page {
-  padding: 32px 36px;
-  max-width: 1100px;
+  padding: 28px 36px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   flex: 1;
 }
 
@@ -42,6 +44,11 @@
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) { animation: none !important; }
+}
+
+@media (max-width: 860px) {
+  .page { padding: 20px 16px 88px; }
+  .page-header { flex-wrap: wrap; }
 }
 
 /* ── Page header ── */
@@ -161,6 +168,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
 }
 
 thead tr {
@@ -171,7 +179,7 @@ thead tr {
 th {
   text-align: left;
   padding: 10px 20px;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: .06em;
@@ -292,6 +300,12 @@ tbody tr:hover td { background: var(--row-hover); }
 
 /* Press feedback: every button gives a little as it's clicked */
 .btn:not(:disabled):active { transform: scale(.97); }
+
+/* A clear keyboard focus ring on everything that can take focus */
+a:focus-visible, button:focus-visible, .btn:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
 
 /* ── Misc ── */
 .badge {
