@@ -5,7 +5,7 @@ import { listCustomers } from '../api/customers';
 import { listVehicles } from '../api/vehicles';
 import { getOrgId } from '../api/auth';
 import { listVendors } from '../api/vendors';
-import { IconPlus, IconX, IconTruck } from '../components/Icons';
+import { IconPlus, IconX, IconTruck, IconMap } from '../components/Icons';
 import Icon3D, { ICONS_3D } from '../components/Icon3D';
 import { vehicleVisual } from '../lib/vehicleVisuals';
 import { STATUS_TAG_CLASS, formatStatus } from '../lib/dispatchLifecycle';
@@ -74,7 +74,7 @@ export default function Trips() {
         lat: vehicle.location.latitude,
         lng: vehicle.location.longitude,
         id: vehicle.registration_number,
-        label: `🚚 ${vehicle.registration_number}`,
+        label: vehicle.registration_number,
         detail: `Last reported ${new Date(vehicle.location.timestamp * 1000).toLocaleString()}`,
         iconUrl: vehicleVisual(vehicle.vehicle_type).icon,
       });
@@ -243,7 +243,7 @@ export default function Trips() {
                       onClick={() => setMapOpenId(mapOpenId === t.id ? null : t.id)}
                       aria-label={mapOpenId === t.id ? `Hide map for ${t.vehicle_registration_number}` : `Route map for ${t.vehicle_registration_number}`}
                     >
-                      {mapOpenId === t.id ? 'Hide map' : '📍 Route map'}
+                      {mapOpenId === t.id ? 'Hide map' : <><IconMap size={14} /> Route map</>}
                     </button>
                   </div>
                 </div>
