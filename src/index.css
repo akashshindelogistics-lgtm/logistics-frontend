@@ -308,8 +308,9 @@
   --ink-2: color-mix(in srgb, var(--brand) 6%, #14171d);
   --ink-glow: color-mix(in srgb, var(--brand) 32%, transparent);
 
-  --font-sans:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'Plus Jakarta Sans', var(--font-sans);
+  /* One face for all UI text; Inter is only the fallback while it loads. */
+  --font-sans:    'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: var(--font-sans);
   --font-mono:    'JetBrains Mono', ui-monospace, monospace;
 
   --shadow-xs:   0 1px 2px rgba(16,24,40,.05);
@@ -335,11 +336,10 @@
 
 html, body { height: 100%; }
 
-/* The display face is for titles and big figures only: at small sizes its
-   narrow word space makes headings like "Needs attention" run together. */
-h1, .kpi-value, .stat-value, .pipe-count, .dash-title {
-  font-family: var(--font-display);
-}
+/* Plus Jakarta Sans draws its space at 0.17em (Inter: 0.25em), so at UI sizes
+   words run together. Set per element so the em follows each font size; an
+   inherited em word-spacing would be fixed in px at the body's size. */
+:where(*) { word-spacing: .07em; }
 
 /* Baseline for every form control. :where() keeps this at zero specificity,
    so any page's own rule still wins; it catches the bare selects and inputs
@@ -377,7 +377,6 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--brand); }
 
 body {
   font-family: var(--font-sans);
-  font-feature-settings: 'cv11', 'ss01';
   background: var(--bg);
   color: var(--text-1);
   font-size: 14px;
