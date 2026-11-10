@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { createOrg } from '../api/orgs';
 import { login, storeAuth } from '../api/auth';
-import { IconBuilding, IconTruck } from '../components/Icons';
+import { IconBuilding } from '../components/Icons';
+import Icon3D from '../components/Icon3D';
 import './Login.css';
 
 export default function Register() {
@@ -43,17 +44,17 @@ export default function Register() {
     <div className="login-root">
       <div className="login-left">
         <div className="login-brand">
-          <div className="login-brand-icon">
-            <IconTruck size={32} />
+          <div className="login-brand-icon login-brand-icon-3d">
+            <Icon3D name="lorry" size={72} float />
           </div>
           <h1>LogiTrack</h1>
           <p>Organization Logistics Platform</p>
         </div>
         <ul className="login-features">
-          <li><span className="feat-icon">📦</span> Track stock across your organization</li>
-          <li><span className="feat-icon">🚛</span> Manage and locate your fleet</li>
-          <li><span className="feat-icon">📍</span> Dispatch to customers by distance</li>
-          <li><span className="feat-icon">📊</span> Live dispatch order history</li>
+          <li><span className="feat-icon"><Icon3D name="package" size={26} /></span> Track stock across your organization</li>
+          <li><span className="feat-icon"><Icon3D name="truck" size={26} /></span> Manage and locate your fleet</li>
+          <li><span className="feat-icon"><Icon3D name="pin" size={26} /></span> Dispatch to customers by distance</li>
+          <li><span className="feat-icon"><Icon3D name="chart" size={26} /></span> Live dispatch order history</li>
         </ul>
       </div>
 

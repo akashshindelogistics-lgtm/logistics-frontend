@@ -31,3 +31,5 @@ export const IconRoute    = i('M6 16a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM18 2a3 3 0 1 0
 export const IconStore    = i('M3 9l1.5-6h15L21 9M4 12v9h16v-9M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M9 21v-6h6v6');
 export const IconBriefcase = i('M3 7h18v13H3zM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18');
 export const IconMenu     = i('M3 6h18M3 12h18M3 18h18');
+export const IconBell     = i('M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9m-4.27 13a2 2 0 0 1-3.46 0');
+export const IconMap      = i('M9 3 3 6v15l6-3 6 3 6-3V3l-6 3-6-3zm0 0v15m6-12v15');

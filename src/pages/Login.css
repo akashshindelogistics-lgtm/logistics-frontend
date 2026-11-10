@@ -7,8 +7,11 @@
 /* ── Left panel ── */
 .login-left {
   flex: 1;
-  background: radial-gradient(120% 80% at 100% 0%, var(--accent-glow), transparent 55%),
-    linear-gradient(160deg, var(--sidebar-bg), var(--sidebar-bg-2));
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: radial-gradient(90% 70% at 85% 0%, var(--ink-glow), transparent 60%),
+    linear-gradient(160deg, var(--ink), var(--ink-2));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,6 +19,19 @@
   color: #fff;
   min-width: 340px;
 }
+
+/* A faint dot grid that fades out towards the bottom-left. */
+.login-left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgba(255,255,255,.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(200deg, #000 20%, transparent 75%);
+}
+
+.login-left > * { max-width: 460px; }
 
 .login-brand {
   margin-bottom: 52px;
@@ -25,7 +41,7 @@
   width: 64px;
   height: 64px;
   border-radius: 18px;
-  background: linear-gradient(135deg, var(--sidebar-accent), var(--brand-2)); color: var(--sidebar-bg);
+  background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: var(--on-brand);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,22 +58,22 @@
 }
 
 .login-brand h1 {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 800;
-  letter-spacing: -0.8px;
-  margin-bottom: 6px;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
 }
 
 .login-brand p {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.55);
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .login-features {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .login-features li {
@@ -65,12 +81,20 @@
   align-items: center;
   gap: 14px;
   font-size: 14.5px;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .feat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 20px;
   flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 /* ── Right panel ── */
@@ -90,7 +114,7 @@
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 36px 40px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 12px 32px -8px rgba(16,24,40,.12);
 }
 
 .login-card-header {
@@ -104,8 +128,8 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: var(--blue-bg);
-  color: var(--blue);
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+  color: var(--brand);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,8 +137,9 @@
 }
 
 .login-card-header h2 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
+  letter-spacing: -.3px;
   color: var(--text-1);
   margin-bottom: 4px;
 }
@@ -140,7 +165,7 @@
 .login-mode-tabs {
   display: flex;
   gap: 6px;
-  background: var(--bg-2, var(--border));
+  background: color-mix(in srgb, var(--text-1) 6%, var(--surface));
   padding: 4px;
   border-radius: 10px;
   margin-bottom: 18px;
@@ -166,19 +191,21 @@
 }
 
 .login-field label {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-2);
+  color: var(--text-1);
 }
 
 .login-field input,
 .login-field select {
+  min-height: 42px;
   padding: 10px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
   font-size: 14px;
   color: var(--text-1);
-  background: var(--surface);
+  background-color: var(--surface);
+  box-shadow: var(--shadow-xs);
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
   width: 100%;
@@ -201,21 +228,21 @@
 
 .login-btn {
   width: 100%;
+  min-height: 44px;
   padding: 12px;
   background: var(--brand);
   color: var(--on-brand);
   border: none;
-  border-radius: 8px;
+  border-radius: 9px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 650;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.12s;
-  box-shadow: 0 4px 12px var(--brand-glow);
+  transition: background-color 0.15s;
+  box-shadow: var(--shadow-xs), inset 0 1px 0 rgba(255,255,255,.12);
 }
 
 .login-btn:hover:not(:disabled) {
-  opacity: 0.92;
-  transform: translateY(-1px);
+  background: var(--brand-dark);
 }
 
 .login-btn:disabled {
@@ -236,8 +263,8 @@
   color: var(--text-3);
   padding: 10px 14px;
   background: var(--bg);
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
 }
 
 /* ── Register page uses same layout ── */

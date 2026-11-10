@@ -6,7 +6,7 @@ import { listDispatchNotifications } from '../api/notifications';
 import { uploadFile, uploadedFileHref } from '../api/uploads';
 import { getOrgId } from '../api/auth';
 import { listVehicleHires, assignVehicleHire } from '../api/vendors';
-import { IconDispatch, IconClock, IconCheck, IconX } from '../components/Icons';
+import { IconDispatch, IconClock, IconCheck, IconX, IconBell } from '../components/Icons';
 import Icon3D from '../components/Icon3D';
 import { STATUS_TAG_CLASS, NEXT_ACTIONS, formatStatus, isRunningLate, type NextAction } from '../lib/dispatchLifecycle';
 import LifecycleTrack from '../components/LifecycleTrack';
@@ -429,7 +429,7 @@ export default function Dispatches() {
                       </td>
                       <td>
                         {NEXT_ACTIONS[o.status] ? (
-                          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                          <div style={{ display: 'flex', gap: 6, flexWrap: 'nowrap' }}>
                             {o.status === 'AWAITING_VEHICLE' && o.hire_id && hires[o.hire_id] && (
                               <button className="btn btn-sm btn-primary" onClick={() => openHireForm(o)}>
                                 Assign truck
@@ -470,7 +470,7 @@ export default function Dispatches() {
                             ? '…'
                             : notifsOpenId === o.id
                               ? 'Hide'
-                              : `🔔 ${notifs[o.id] ? notifs[o.id].length : ''}`.trim()}
+                              : <><IconBell size={14} />{notifs[o.id] ? notifs[o.id].length : ''}</>}
                         </button>
                       </td>
                       <td>

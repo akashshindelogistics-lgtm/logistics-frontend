@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useLayoutEffect, useState, type ReactNode } from 'react';
 
 export type Theme = 'light' | 'dark';
 
@@ -45,14 +45,16 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
-  useEffect(() => {
+  // Layout effects run before the first paint, so a page never flashes the
+  // default (heritage) palette before the chosen one applies.
+  useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
 
   const [palette, setPalette] = useState<Palette>(getInitialPalette);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.setAttribute('data-palette', palette);
     localStorage.setItem(PALETTE_STORAGE_KEY, palette);
   }, [palette]);
