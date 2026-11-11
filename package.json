@@ -33,6 +33,7 @@
     "test:e2e:demo:theme-colors": "playwright test --config=playwright.demo.config.ts theme-colors.demo",
     "test:e2e:demo:dashboard": "playwright test --config=playwright.demo.config.ts dashboard.demo",
     "test:e2e:demo:theme-palettes": "playwright test --config=playwright.demo.config.ts theme-palettes.demo",
+    "test:e2e:demo:tracking": "playwright test --config=playwright.demo.config.ts /tracking.demo",
     "test:e2e:demo:agent-inbox": "E2E_FAKE_MODEL=1 playwright test --config=playwright.demo.config.ts agent-inbox.demo",
     "render:vehicle-icons": "node scripts/render-vehicle-icons.mjs"
   },

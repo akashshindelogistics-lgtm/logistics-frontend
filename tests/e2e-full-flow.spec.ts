@@ -240,6 +240,18 @@ test('full logistics workflow: register, login, warehouse, fleet, delivery, bill
     await expect(page.getByText('QUEUED').first()).toBeVisible();
   });
 
+  await test.step('The customer opens the tracking link from their message', async () => {
+    const message = await page.getByText(/Track your order: /).first().textContent();
+    const link = message?.match(/Track your order: (\S+)/)?.[1];
+    expect(link, 'the customer message carries a tracking link').toBeTruthy();
+    const customerTab = await page.context().newPage();
+    await customerTab.goto(new URL(link!).pathname);
+    await expect(customerTab.getByText(/^From /)).toBeVisible({ timeout: 8000 });
+    await expect(customerTab.getByTestId('track-status')).toHaveText(/pending/i);
+    await customerTab.waitForTimeout(1500);
+    await customerTab.close();
+  });
+
   await test.step('Check the operations report while the shipment is out', async () => {
     await page.goto('/reports');
     await expect(page.getByRole('heading', { level: 1, name: 'Reports' })).toBeVisible();
