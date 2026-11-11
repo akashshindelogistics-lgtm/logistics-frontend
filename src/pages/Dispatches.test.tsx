@@ -371,6 +371,10 @@ describe('Dispatches page', () => {
           recipient_kind: 'driver', recipient: '(no contact on file)', body: 'New trip assigned.', status: 'SKIPPED', created_at: 1_700_000_100 },
         { id: 'n3', org_id: 'org-1', dispatch_id: order.id, event: 'DISPATCH_DELIVERED', channel: 'EMAIL',
           recipient_kind: 'customer', recipient: 'asha-2@example.com', body: 'Your order has been delivered.', status: 'FAILED', created_at: 1_700_000_200 },
+        { id: 'n4', org_id: 'org-1', dispatch_id: order.id, event: 'DISPATCH_RUNNING_LATE', channel: 'EMAIL',
+          recipient_kind: 'org_admin', recipient: 'owner@example.com', body: 'Dispatch order-1 is still in transit.', status: 'QUEUED', created_at: 1_700_000_300 },
+        { id: 'n5', org_id: 'org-1', dispatch_id: order.id, event: 'INVOICE_RAISED', channel: 'EMAIL',
+          recipient_kind: 'customer', recipient: 'billing@asha.example', body: 'An invoice of Rs 4500 has been raised.', status: 'SENT', created_at: 1_700_000_400 },
       ],
     });
 
@@ -382,6 +386,10 @@ describe('Dispatches page', () => {
     expect(await screen.findByText('Your order is on its way.')).toBeInTheDocument();
     expect(screen.getByText('asha@example.com', { exact: false })).toBeInTheDocument();
     expect(screen.getByText('New trip assigned.')).toBeInTheDocument();
+    // Owner alerts and invoice emails share the same log.
+    expect(screen.getByText('org_admin')).toBeInTheDocument();
+    expect(screen.getByText('owner@example.com', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('An invoice of Rs 4500 has been raised.')).toBeInTheDocument();
 
     // FAILED (an attempted, unsuccessful delivery) renders distinctly from
     // QUEUED and SKIPPED.
